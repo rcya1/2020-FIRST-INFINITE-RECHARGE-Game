@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Processing-Py",
+            "type": "shell",
+            "command": "java -jar jars/processing-py.jar ./src/FirstInfiniteRecharge/FirstInfiniteRecharge.py",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
