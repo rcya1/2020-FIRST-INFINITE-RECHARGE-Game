@@ -10,16 +10,13 @@ class Robot(Body):
         self.fill_color = fill_color
 
     def update(self):
-        force = PVector(0, 0)
-        torque = 0
-
-        super(Robot, self).update(force, torque)
+        super(Robot, self).update()
 
     def show(self):
         pushMatrix()
 
         translate(self.pos.x, self.pos.y)
-        rotate(self.angle)
+        rotate(-self.angle)
 
         stroke(0)
         strokeWeight(1)
