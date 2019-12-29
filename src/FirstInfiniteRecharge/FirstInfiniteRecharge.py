@@ -2,11 +2,16 @@ from Robot import *
 from KeyHandler import *
 from Debug import *
 
+# stores every single body in the game
 bodies = []
+
+# stores all of the robots in the game
 robots = []
 
+# sets up all of the variables and the screen size
 def setup():
     size(1200, 800)
+    frameRate(30)
 
     robotBlue = Robot(PVector(width / 3, height / 2), 0, 100, 150, color(50, 50, 255))
     robotRed = Robot(PVector(width * 2 / 3, height / 2), 0, 100, 150, color(255, 50, 50))
@@ -16,10 +21,12 @@ def setup():
     robots.append(robotBlue)
     robots.append(robotRed)
 
+# runs periodically at 30 frames per second
 def draw():
     update()
     show()
 
+# updates all of the bodies
 def update():
     if getKey('w'):
         robots[0].applyForceRel(PVector(0, ROBOT_APPLIED_FORCE))
@@ -30,11 +37,12 @@ def update():
     if getKey('d'):
         robots[0].applyTorque(ROBOT_APPLIED_TORQUE)
 
-    robots[0].applyForceRel(PVector(0, 1000), PVector(-50, 75))
+    # robots[0].applyForceRelPosRel(PVector(0, -1000), PVector(-50, 75))
 
     for body in bodies:
         body.update()
 
+# draws the screen
 def show():
     pushMatrix()
 
@@ -44,5 +52,8 @@ def show():
     background(200)
     for body in bodies:
         body.show()
+
+    drawPVectors()
+    resetDebug()
 
     popMatrix()
