@@ -40,6 +40,7 @@ def update():
     # robots[0].applyForceRelPosRel(PVector(0, -1000), PVector(-50, 75))
 
     for body in bodies:
+        body.applyFriction()
         body.update()
 
 # draws the screen

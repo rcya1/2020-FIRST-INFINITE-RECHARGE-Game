@@ -1,4 +1,5 @@
 from Debug import *
+from Constants import *
 
 class Body(object):
 
@@ -25,7 +26,6 @@ class Body(object):
     def applyForceRel(self, force_add):
         force_add_abs = force_add.rotate(-self.angle)
         self.applyForceAbs(force_add_abs)
-        drawPVector(self.pos, force_add_abs)
 
     # apply a force at a point not at the center of mass
     # both the force and the position of application will be in absolute coordinates
@@ -38,7 +38,6 @@ class Body(object):
         if cross.z >= 0:
             torque *= -1
         self.applyTorque(torque)
-        drawPVector(pos_app, force_add)
 
     # apply a force at a point not at the center of mass
     # both the force and the position of application will be relative to the robot's center and rotated
@@ -57,6 +56,19 @@ class Body(object):
     # apply a torque to the body
     def applyTorque(self, torque_add):
         self.torque += torque_add
+
+    # calculate friction and apply it to the total force and total torque
+    def applyFriction(self):
+        self.force.add(PVector.mult(self.vel, self.vel.mag() * AIR_FRICTION_CONSTANT))
+        self.force.add(PVector.mult(self.vel.normalize(None), self.mass * GROUND_FRICTION_CONSTANT))
+
+        self.torque += self.a_vel * self.a_vel * A_AIR_FRICTION_CONSTANT
+        add = self.mass * A_GROUND_FRICTION_CONSTANT
+        if self.a_vel < 0:
+            add *= -1
+        elif self.a_vel == 0:
+            add *= 0
+        self.torque += add
         
     # update the state of the body
     # includes position, velocity, acceleration, angle, angular velocity, and angular acceleration
