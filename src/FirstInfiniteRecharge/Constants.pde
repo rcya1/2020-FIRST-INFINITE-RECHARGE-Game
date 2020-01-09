@@ -1,0 +1,3 @@
+final short CATEGORY_ROBOT = 0x0001;
+
+final short MASK_ROBOT = CATEGORY_ROBOT;

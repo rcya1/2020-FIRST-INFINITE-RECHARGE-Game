@@ -1,4 +1,9 @@
 import shiffman.box2d.*;
+import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.dynamics.joints.*;
+import org.jbox2d.dynamics.*;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
 
 import java.util.*;
 
@@ -8,6 +13,8 @@ final int FPS = 60;
 
 HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
+
+Robot player1;
 
 void setup() {
     size(1000, 600);
@@ -25,7 +32,12 @@ void setup() {
 }
 
 void resetGame() {
+    if(player1 != null) {
+        player1.removeFromWorld();
+    }
 
+    player1 = new Robot(width / 10, height / 2, width / 20, height / 7, 90, color(255, 175, 175), 
+        true);
 }
 
 void draw() {
@@ -35,7 +47,11 @@ void draw() {
 }
 
 void update() {
+    player1.input(keysPressed, keyCodes);
+
     box2D.step();
+
+    player1.update();
 }
 
 void showBackground() {
@@ -43,7 +59,7 @@ void showBackground() {
 }
 
 void showSprites() {
-
+    player1.draw();
 }
 
 void keyPressed() {
