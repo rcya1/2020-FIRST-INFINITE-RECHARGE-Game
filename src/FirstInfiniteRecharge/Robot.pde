@@ -30,7 +30,7 @@ class Robot
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = box2D.coordPixelsToWorld(x, y);
-        bodyDef.angle = radians(angle);
+        bodyDef.angle = radians(angle - 90);
         bodyDef.linearDamping = 7.5;
         bodyDef.angularDamping = 7.5;
         
@@ -66,6 +66,7 @@ class Robot
     }
     
     void show() {
+        println(w, h);
         pushMatrix();
         
             rectMode(CENTER);

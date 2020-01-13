@@ -5,21 +5,22 @@ class Boundary
     
     Body body;
 
-    static final float FRICTION = 0.3;
+    static final float FRICTION = 0.8;
     static final float RESTITUTION = 0.1257;
     static final float DENSITY = 1.257;
     
-    Boundary(float x, float y, float w, float h) {
+    Boundary(float x, float y, float w, float h, float angle) {
         this.w = w;
         this.h = h;
 
-        setupBox2D(x, y);
+        setupBox2D(x, y, angle);
     }
 
-    void setupBox2D(float x, float y) {
+    void setupBox2D(float x, float y, float angle) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.STATIC;
         bodyDef.position = box2D.coordPixelsToWorld(x, y);
+        bodyDef.angle = radians(angle - 90);
         
         body = box2D.createBody(bodyDef);
         
