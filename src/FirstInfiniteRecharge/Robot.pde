@@ -3,9 +3,6 @@ public class Robot
     float w, h;
     color robotColor;
     
-    float speed;
-    float a_speed;
-    
     boolean wasd;
     
     Body body;
@@ -13,16 +10,12 @@ public class Robot
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
-    static final float DENSITY = 1.0;
+    static final float DENSITY = 1 ;
 
-    static final float MAX_SPEED = 25000;
-    static final float MAX_A_SPEED = 500;
+    static final float DRIVE_FORCE = 25000;
+    static final float TURN_TORQUE = 25000;
     
-    public Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd)
-    {
-        this.speed = MAX_SPEED;
-        this.a_speed = MAX_A_SPEED;
-        
+    public Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
         this.w = w;
         this.h = h;
         
@@ -33,8 +26,7 @@ public class Robot
         setupBox2D(x, y, angle);
     }
 
-    void setupBox2D(float x, float y, float angle)
-    {
+    void setupBox2D(float x, float y, float angle) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = box2D.coordPixelsToWorld(x, y);
@@ -61,55 +53,56 @@ public class Robot
         fixture = body.createFixture(fixtureDef);
     }
     
-    void update()
-    {
+    void update() {
         
     }
     
-    void applyForce(PVector force)
-    {
+    void applyForce(PVector force) {
         body.applyForceToCenter(box2D.vectorPixelsToWorld(force));
     }
     
-    void applyAngularForce(float force)
-    {
-        body.applyAngularImpulse(box2D.scalarPixelsToWorld(-force));
+    void applyTorque(float torque) {
+        body.applyTorque(box2D.scalarPixelsToWorld(-torque));
     }
     
-    void draw()
-    {
+    void draw() {
         pushMatrix();
         
-        rectMode(CENTER);
-        Vec2 loc = box2D.getBodyPixelCoord(body);
-        translate(loc.x, loc.y);
-        rotate(-body.getAngle());
+            rectMode(CENTER);
+            Vec2 loc = box2D.getBodyPixelCoord(body);
+            translate(loc.x, loc.y);
+            rotate(-body.getAngle());
 
-        stroke(0);
-        fill(robotColor);
-        rect(0, 0, w, h);
+            stroke(0);
+            fill(robotColor);
+            rect(0, 0, w, h);
         
         popMatrix();
     }
     
-    void input(HashSet<Character> keys, HashSet<Integer> keyCodes)
-    {
-        if((keys.contains('d') && wasd) || ((keys.contains('\'') || keys.contains('"')) && !wasd)) applyAngularForce(a_speed);
-        if((keys.contains('a') && wasd) || (keys.contains('l') && !wasd)) applyAngularForce(-a_speed);
-        if((keys.contains('w') && wasd) || (keys.contains('p') && !wasd))
-        {
-        PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0).mult(speed);
-        applyForce(moveForce);
+    void input(HashSet<Character> keys, HashSet<Integer> keyCodes) {
+        if((keys.contains('d') && wasd) || ((keys.contains('\'') || keys.contains('"')) && !wasd)) {
+            applyTorque(TURN_TORQUE);
         }
-        if((keys.contains('s') && wasd) || ((keys.contains(';') || keys.contains(':')) && !wasd))
-        {
-        PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0 + PI).mult(speed);
-        applyForce(moveForce);
+
+        if((keys.contains('a') && wasd) || (keys.contains('l') && !wasd)) {
+            applyTorque(-TURN_TORQUE);
+        }
+
+        if((keys.contains('w') && wasd) || (keys.contains('p') && !wasd)) {
+            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0).mult(DRIVE_FORCE);
+            applyForce(moveForce);
+        }
+
+        if((keys.contains('s') && wasd) || ((keys.contains(';') || keys.contains(':')) && !wasd)) {
+            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0 + PI).mult(DRIVE_FORCE);
+            applyForce(moveForce);
         }
     }
 
-    void removeFromWorld()
-    {
-        if(body != null) box2D.destroyBody(body);
+    void removeFromWorld() {
+        if(body != null) {
+            box2D.destroyBody(body);
+        }
     }
 }
