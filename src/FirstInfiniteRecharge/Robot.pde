@@ -1,4 +1,4 @@
-public class Robot
+class Robot
 {
     float w, h;
     color robotColor;
@@ -12,10 +12,10 @@ public class Robot
     static final float RESTITUTION = 0.2;
     static final float DENSITY = 1 ;
 
-    static final float DRIVE_FORCE = 25000;
+    static final float DRIVE_FORCE = 35000;
     static final float TURN_TORQUE = 25000;
     
-    public Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
+    Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
         this.w = w;
         this.h = h;
         
@@ -31,8 +31,8 @@ public class Robot
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = box2D.coordPixelsToWorld(x, y);
         bodyDef.angle = radians(angle);
-        bodyDef.linearDamping = 2.5;
-        bodyDef.angularDamping = 3.0;
+        bodyDef.linearDamping = 7.5;
+        bodyDef.angularDamping = 7.5;
         
         body = box2D.createBody(bodyDef);
         
@@ -65,7 +65,7 @@ public class Robot
         body.applyTorque(box2D.scalarPixelsToWorld(-torque));
     }
     
-    void draw() {
+    void show() {
         pushMatrix();
         
             rectMode(CENTER);
@@ -80,7 +80,7 @@ public class Robot
         popMatrix();
     }
     
-    void input(HashSet<Character> keys, HashSet<Integer> keyCodes) {
+    void handleInput(HashSet<Character> keys, HashSet<Integer> keyCodes) {
         if((keys.contains('d') && wasd) || ((keys.contains('\'') || keys.contains('"')) && !wasd)) {
             applyTorque(TURN_TORQUE);
         }
@@ -90,12 +90,12 @@ public class Robot
         }
 
         if((keys.contains('w') && wasd) || (keys.contains('p') && !wasd)) {
-            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0).mult(DRIVE_FORCE);
+            PVector moveForce = PVector.fromAngle(-body.getAngle() - PI / 2).mult(DRIVE_FORCE);
             applyForce(moveForce);
         }
 
         if((keys.contains('s') && wasd) || ((keys.contains(';') || keys.contains(':')) && !wasd)) {
-            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI / 2.0 + PI).mult(DRIVE_FORCE);
+            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI - PI / 2).mult(DRIVE_FORCE);
             applyForce(moveForce);
         }
     }

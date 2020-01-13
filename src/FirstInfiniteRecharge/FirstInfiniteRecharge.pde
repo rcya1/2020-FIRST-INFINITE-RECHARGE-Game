@@ -15,6 +15,7 @@ HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
 
 Robot player1;
+Boundary boundary1;
 
 PImage field;
 PImage shieldGenerator;
@@ -33,8 +34,16 @@ void setup() {
     keysPressed = new HashSet<Character>();
     keyCodes = new HashSet<Integer>();
 
-    field = loadImage("/img/Field.png");
-    shieldGenerator = loadImage("/img/ShieldGenerator.png");
+    setupBackground();
+    resetGame();
+
+    boundary1 = new Boundary(width / 2, height / 2, 100, 200);
+}
+
+void setupBackground() {
+    field = loadImage("img/Field.png");
+    shieldGenerator = loadImage("img/ShieldGenerator.png");
+
     if(((float) width) / field.width > ((float) height) / field.height) {
         field.resize(0, height);
         shieldGenerator.resize(0, height);
@@ -45,8 +54,6 @@ void setup() {
         shieldGenerator.resize(width, 0);
         topPadding = true;
     }
-
-    resetGame();
 }
 
 void resetGame() {
@@ -54,7 +61,7 @@ void resetGame() {
         player1.removeFromWorld();
     }
 
-    player1 = new Robot(cx(1./10), cy(1./2), cw(1./20), ch(1./7), 90, RED, true);
+    player1 = new Robot(cx(1./10), cy(1./2), cw(1./25), ch(1./10), 0, RED, true);
 }
 
 void draw() {
@@ -64,7 +71,7 @@ void draw() {
 }
 
 void update() {
-    player1.input(keysPressed, keyCodes);
+    player1.handleInput(keysPressed, keyCodes);
 
     box2D.step();
 
@@ -79,7 +86,8 @@ void showBackground() {
 }
 
 void showSprites() {
-    player1.draw();
+    player1.show();
+    boundary1.show();
 }
 
 void keyPressed() {

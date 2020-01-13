@@ -41,11 +41,12 @@ class Boundary
         
     }
     
-    void draw() {
+    // only used for debugging
+    void show() {
         pushMatrix();
         
             rectMode(CENTER);
-            fill(255, 255, 0);
+            fill(255, 0, 0);
             Vec2 loc = box2D.getBodyPixelCoord(body);
             translate(loc.x, loc.y);
             rotate(-body.getAngle());
