@@ -35,3 +35,42 @@ public float cy(float ratio) {
         return height * ratio;
     }
 }
+
+public float getXRatio(float x) {
+    if(topPadding) {
+        return x / width;
+    }
+    else {
+        int paddingWidth = (width - field.width) / 2;
+        return (x - paddingWidth) / (width - paddingWidth * 2);
+    }
+}
+
+public float getYRatio(float y) {
+    if(topPadding) {
+        int paddingHeight = (height - field.height) / 2;
+        return (y - paddingHeight) / (height - paddingHeight * 2);
+    }
+    else {
+        return y / height;
+    }
+}
+
+public float getWRatio(float w) {
+    return w / width;
+}
+
+public float getHRatio(float h) {
+    return h / height;
+}
+
+int pressMouseX = 0, pressMouseY = 0;
+
+void mousePressed() {
+    println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(mouseY));
+    float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
+    println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
+
+    pressMouseX = mouseX;
+    pressMouseY = mouseY;
+}

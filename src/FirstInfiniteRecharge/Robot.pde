@@ -66,7 +66,6 @@ class Robot
     }
     
     void show() {
-        println(w, h);
         pushMatrix();
         
             rectMode(CENTER);

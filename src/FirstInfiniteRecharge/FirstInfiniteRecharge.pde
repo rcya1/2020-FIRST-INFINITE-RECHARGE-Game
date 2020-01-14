@@ -37,7 +37,7 @@ void setup() {
     setupBackground();
     resetGame();
 
-    boundary1 = new Boundary(width / 2, height / 2, 100, 200, 45);
+    boundary1 = new Boundary(cx(0.5), cy(0.5), cw(0.2), ch(0.1), 0);
 }
 
 void setupBackground() {
