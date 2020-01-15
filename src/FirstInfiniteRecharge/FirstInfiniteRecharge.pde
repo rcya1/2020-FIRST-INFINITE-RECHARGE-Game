@@ -21,12 +21,13 @@ PImage field;
 PImage shieldGenerator;
 
 boolean topPadding;
+float scalingFactor;
 
 void setup() {
     size(1000, 600);
     frameRate(FPS);
 
-    box2D = new Box2DProcessing(this); // TODO set up scaling factor to make this work the same with different screen sizes
+    box2D = new Box2DProcessing(this);
     box2D.createWorld();
     box2D.listenForCollisions();
     box2D.setGravity(0, 0);
@@ -67,11 +68,13 @@ void setupBackground() {
     if(((float) width) / field.width > ((float) height) / field.height) {
         field.resize(0, height);
         shieldGenerator.resize(0, height);
+        scalingFactor = ((float) field.height) / height;
         topPadding = false;
     }
     else {
         field.resize(width, 0);
         shieldGenerator.resize(width, 0);
+        scalingFactor = ((float) field.width) / width;
         topPadding = true;
     }
 }
@@ -97,22 +100,22 @@ void update() {
 
     player1.update();
 
-    println(frameRate);
+    // println(frameRate);
 }
 
 void showBackground() {
     background(200);
     imageMode(CENTER);
     image(field, width / 2, height / 2);
-    
-    image(shieldGenerator, width / 2, height / 2);
 }
 
 void showSprites() {
     player1.show();
-    for(Boundary boundary : boundaries) {
-        boundary.show();
-    }
+    // for(Boundary boundary : boundaries) {
+    //     boundary.show();
+    // }
+    
+    image(shieldGenerator, width / 2, height / 2);
 }
 
 void keyPressed() {

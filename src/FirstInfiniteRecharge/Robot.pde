@@ -10,7 +10,7 @@ class Robot
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
-    static final float DENSITY = 1 ;
+    static final float DENSITY = 1;
 
     static final float DRIVE_FORCE = 35000;
     static final float TURN_TORQUE = 25000;
