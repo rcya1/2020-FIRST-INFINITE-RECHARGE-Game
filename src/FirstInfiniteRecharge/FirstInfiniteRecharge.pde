@@ -15,7 +15,7 @@ HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
 
 Robot player1;
-Boundary boundary1;
+ArrayList<Boundary> boundaries;
 
 PImage field;
 PImage shieldGenerator;
@@ -26,7 +26,7 @@ void setup() {
     size(1000, 600);
     frameRate(FPS);
 
-    box2D = new Box2DProcessing(this);
+    box2D = new Box2DProcessing(this); // TODO set up scaling factor to make this work the same with different screen sizes
     box2D.createWorld();
     box2D.listenForCollisions();
     box2D.setGravity(0, 0);
@@ -37,7 +37,27 @@ void setup() {
     setupBackground();
     resetGame();
 
-    boundary1 = new Boundary(cx(0.5), cy(0.5), cw(0.2), ch(0.1), 0);
+    boundaries = new ArrayList<Boundary>();
+    boundaries.add(new Boundary(cx(0.056), cy(0.15), cw(0.110), ch(0.036), -20.36)); // top left wall
+    boundaries.add(new Boundary(cx(0.037), cy(0.5), cw(0.021), ch(0.46), 90)); // left wall
+    boundaries.add(new Boundary(cx(0.056), cy(0.85), cw(0.110), ch(0.036), 20.36)); // bot left wall
+    
+    boundaries.add(new Boundary(cx(0.944), cy(0.85), cw(0.110), ch(0.036), -20.36)); // bot right wall
+    boundaries.add(new Boundary(cx(0.963), cy(0.5), cw(0.021), ch(0.46), 90)); // right wall
+    boundaries.add(new Boundary(cx(0.944), cy(0.15), cw(0.110), ch(0.036), 20.36)); // top right wall
+    
+    boundaries.add(new Boundary(cx(0.5), cy(0.054), cw(0.838), ch(0.008), 90)); // top wall
+    boundaries.add(new Boundary(cx(0.5), cy(0.946), cw(0.838), ch(0.008), 90)); // bot wall
+    
+    boundaries.add(new Boundary(cx(0.564), cy(0.130), cw(0.061), ch(0.139), 90)); // top wheel of fortune
+    boundaries.add(new Boundary(cx(0.564), cy(0.208), cw(0.045), ch(0.0067), 90)); // top wheel of fortune bot indent
+    boundaries.add(new Boundary(cx(0.436), cy(0.870), cw(0.061), ch(0.139), 90)); // bot wheel of fortune
+    boundaries.add(new Boundary(cx(0.436), cy(0.792), cw(0.045), ch(0.0067), 90)); // bot wheel of fortune top indent
+
+    boundaries.add(new Boundary(cx(0.355), cy(0.400), cw(0.020), ch(0.032), 23)); // shield generator top left
+    boundaries.add(new Boundary(cx(0.563), cy(0.233), cw(0.020), ch(0.032), 23)); // shield generator top right
+    boundaries.add(new Boundary(cx(0.436), cy(0.763), cw(0.020), ch(0.032), 23)); // shield generator bot left
+    boundaries.add(new Boundary(cx(0.644), cy(0.598), cw(0.020), ch(0.032), 23)); // shield generator bot right
 }
 
 void setupBackground() {
@@ -76,18 +96,23 @@ void update() {
     box2D.step();
 
     player1.update();
+
+    println(frameRate);
 }
 
 void showBackground() {
     background(200);
     imageMode(CENTER);
     image(field, width / 2, height / 2);
+    
     image(shieldGenerator, width / 2, height / 2);
 }
 
 void showSprites() {
     player1.show();
-    boundary1.show();
+    for(Boundary boundary : boundaries) {
+        boundary.show();
+    }
 }
 
 void keyPressed() {

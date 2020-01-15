@@ -20,7 +20,7 @@ public float cx(float ratio) {
         return width * ratio;
     }
     else {
-        int paddingWidth = (width - field.width) / 2;
+        float paddingWidth = (width - field.width) / 2;
         return (width - paddingWidth * 2) * ratio + paddingWidth;
     }
 }
@@ -28,7 +28,7 @@ public float cx(float ratio) {
 // converts ratio of total height to pixels while considering padding
 public float cy(float ratio) {
     if(topPadding) {
-        int paddingHeight = (height - field.height) / 2;
+        float paddingHeight = (height - field.height) / 2;
         return (height - paddingHeight * 2) * ratio + paddingHeight;
     }
     else {
@@ -41,14 +41,14 @@ public float getXRatio(float x) {
         return x / width;
     }
     else {
-        int paddingWidth = (width - field.width) / 2;
+        float paddingWidth = (width - field.width) / 2;
         return (x - paddingWidth) / (width - paddingWidth * 2);
     }
 }
 
 public float getYRatio(float y) {
     if(topPadding) {
-        int paddingHeight = (height - field.height) / 2;
+        float paddingHeight = (height - field.height) / 2;
         return (y - paddingHeight) / (height - paddingHeight * 2);
     }
     else {
@@ -70,6 +70,7 @@ void mousePressed() {
     println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(mouseY));
     float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
     println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
+    println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)) - 90);
 
     pressMouseX = mouseX;
     pressMouseY = mouseY;
