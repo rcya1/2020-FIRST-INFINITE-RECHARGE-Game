@@ -16,18 +16,22 @@ HashSet<Integer> keyCodes;
 
 Robot player1;
 ArrayList<Boundary> boundaries;
+ArrayList<PowerCell> powerCells;
 
 PImage field;
 PImage shieldGenerator;
+PImage powerCell;
 
 boolean topPadding;
 float scalingFactor;
 
 void setup() {
     size(1000, 600);
+    // fullScreen();
     frameRate(FPS);
+    setupImages();
 
-    box2D = new Box2DProcessing(this);
+    box2D = new Box2DProcessing(this, 10); // TODO fix scaling factor
     box2D.createWorld();
     box2D.listenForCollisions();
     box2D.setGravity(0, 0);
@@ -35,10 +39,9 @@ void setup() {
     keysPressed = new HashSet<Character>();
     keyCodes = new HashSet<Integer>();
 
-    setupBackground();
     resetGame();
 
-    boundaries = new ArrayList<Boundary>();
+    boundaries = new ArrayList<Boundary>(); // TODO Fix the boundaries
     boundaries.add(new Boundary(cx(0.056), cy(0.15), cw(0.110), ch(0.036), -20.36)); // top left wall
     boundaries.add(new Boundary(cx(0.037), cy(0.5), cw(0.021), ch(0.46), 90)); // left wall
     boundaries.add(new Boundary(cx(0.056), cy(0.85), cw(0.110), ch(0.036), 20.36)); // bot left wall
@@ -59,24 +62,30 @@ void setup() {
     boundaries.add(new Boundary(cx(0.563), cy(0.233), cw(0.020), ch(0.032), 23)); // shield generator top right
     boundaries.add(new Boundary(cx(0.436), cy(0.763), cw(0.020), ch(0.032), 23)); // shield generator bot left
     boundaries.add(new Boundary(cx(0.644), cy(0.598), cw(0.020), ch(0.032), 23)); // shield generator bot right
+
+    powerCells = new ArrayList<PowerCell>();
+    powerCells.add(new PowerCell(cx(0.5), cy(0.5)));
 }
 
-void setupBackground() {
+void setupImages() {
     field = loadImage("img/Field.png");
     shieldGenerator = loadImage("img/ShieldGenerator.png");
+    powerCell = loadImage("img/PowerCell.png");
 
     if(((float) width) / field.width > ((float) height) / field.height) {
+        scalingFactor = ((float) field.height) / height;
         field.resize(0, height);
         shieldGenerator.resize(0, height);
-        scalingFactor = ((float) field.height) / height;
         topPadding = false;
     }
     else {
+        scalingFactor = ((float) field.width) / width;
         field.resize(width, 0);
         shieldGenerator.resize(width, 0);
-        scalingFactor = ((float) field.width) / width;
         topPadding = true;
     }
+
+    powerCell.resize((int) (powerCell.width / scalingFactor), 0);
 }
 
 void resetGame() {
@@ -99,6 +108,9 @@ void update() {
     box2D.step();
 
     player1.update();
+    for(PowerCell powerCell : powerCells) {
+        powerCell.update();
+    }
 
     // println(frameRate);
 }
@@ -114,6 +126,9 @@ void showSprites() {
     // for(Boundary boundary : boundaries) {
     //     boundary.show();
     // }
+    for(PowerCell powerCell : powerCells) {
+        powerCell.show();
+    }
     
     image(shieldGenerator, width / 2, height / 2);
 }

@@ -6,12 +6,24 @@
 
 // converts ratio of total width to pixels 
 public float cw(float ratio) {
-    return width * ratio;
+    if(topPadding) {
+        return width * ratio;
+    }
+    else {
+        float paddingWidth = (width - field.width) / 2;
+        return (width - paddingWidth * 2) * ratio;
+    }
 }
 
 // converts ratio of total height to pixels 
 public float ch(float ratio) {
-    return height * ratio;
+    if(topPadding) {
+        float paddingHeight = (height - field.height) / 2;
+        return (height - paddingHeight * 2) * ratio;
+    }
+    else {
+        return height * ratio;
+    }
 }
 
 // converts ratio of total width to pixels while considering padding
@@ -57,11 +69,23 @@ public float getYRatio(float y) {
 }
 
 public float getWRatio(float w) {
-    return w / width;
+    if(topPadding) {
+        return w / width;
+    }
+    else {
+        float paddingWidth = (width - field.width) / 2;
+        return w / (width - paddingWidth * 2);
+    }
 }
 
 public float getHRatio(float h) {
-    return h / height;
+    if(topPadding) {
+        float paddingHeight = (height - field.height) / 2;
+        return h / (height - paddingHeight * 2);
+    }
+    else {
+        return h / height;
+    }
 }
 
 int pressMouseX = 0, pressMouseY = 0;
