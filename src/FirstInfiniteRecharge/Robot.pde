@@ -1,4 +1,5 @@
 class Robot {
+    
     float w, h;
     color robotColor;
     
@@ -11,8 +12,8 @@ class Robot {
     static final float RESTITUTION = 0.2;
     static final float DENSITY = 1;
 
-    static final float DRIVE_FORCE = 35000;
-    static final float TURN_TORQUE = 25000;
+    static final float DRIVE_FORCE = 150000;
+    static final float TURN_TORQUE = 150000;
     
     Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
         this.w = w;
@@ -28,17 +29,15 @@ class Robot {
     void setupBox2D(float x, float y, float angle) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
-        bodyDef.position = box2D.coordPixelsToWorld(x, y);
-        bodyDef.angle = radians(angle - 90);
+        bodyDef.position = new Vec2(x, y);
+        bodyDef.angle = radians(angle);
         bodyDef.linearDamping = 7.5;
         bodyDef.angularDamping = 7.5;
         
         body = box2D.createBody(bodyDef);
         
         PolygonShape shape = new PolygonShape();
-        float box2DWidth = box2D.scalarPixelsToWorld(w);
-        float box2DHeight = box2D.scalarPixelsToWorld(h);
-        shape.setAsBox(box2DWidth / 2, box2DHeight / 2);
+        shape.setAsBox(w / 2, h / 2);
         
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -57,44 +56,45 @@ class Robot {
     }
     
     void applyForce(PVector force) {
-        body.applyForceToCenter(box2D.vectorPixelsToWorld(force));
+        body.applyForceToCenter(new Vec2(force.x, force.y));
     }
     
     void applyTorque(float torque) {
-        body.applyTorque(box2D.scalarPixelsToWorld(-torque));
+        body.applyTorque(torque);
     }
     
     void show() {
         pushMatrix();
         
             rectMode(CENTER);
-            Vec2 loc = box2D.getBodyPixelCoord(body);
-            translate(loc.x, loc.y);
+            Vec2 loc = body.getTransform().p;
+            // println(loc);
+            translate(cx(loc.x), height - cy(loc.y));
             rotate(-body.getAngle());
 
             stroke(0);
             fill(robotColor);
-            rect(0, 0, w, h);
+            rect(0, 0, cw(w), ch(h));
         
         popMatrix();
     }
     
     void handleInput(HashSet<Character> keys, HashSet<Integer> keyCodes) {
         if((keys.contains('d') && wasd) || ((keys.contains('\'') || keys.contains('"')) && !wasd)) {
-            applyTorque(TURN_TORQUE);
-        }
-
-        if((keys.contains('a') && wasd) || (keys.contains('l') && !wasd)) {
             applyTorque(-TURN_TORQUE);
         }
 
+        if((keys.contains('a') && wasd) || (keys.contains('l') && !wasd)) {
+            applyTorque(TURN_TORQUE);
+        }
+
         if((keys.contains('w') && wasd) || (keys.contains('p') && !wasd)) {
-            PVector moveForce = PVector.fromAngle(-body.getAngle() - PI / 2).mult(DRIVE_FORCE);
+            PVector moveForce = PVector.fromAngle(body.getAngle()).mult(DRIVE_FORCE);
             applyForce(moveForce);
         }
 
         if((keys.contains('s') && wasd) || ((keys.contains(';') || keys.contains(':')) && !wasd)) {
-            PVector moveForce = PVector.fromAngle(-body.getAngle() + PI - PI / 2).mult(DRIVE_FORCE);
+            PVector moveForce = PVector.fromAngle(body.getAngle() + PI).mult(DRIVE_FORCE);
             applyForce(moveForce);
         }
     }

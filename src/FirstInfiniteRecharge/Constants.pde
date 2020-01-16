@@ -1,5 +1,10 @@
 final color RED = color(255, 175, 175);
 
+final float FIELD_WIDTH = 277.2;
+final float FIELD_HEIGHT = 146.3;
+
+final float SCALING_FACTOR = 100.0;
+
 final short CATEGORY_ROBOT = 0x0001;
 final short CATEGORY_CELL = 0x0002;
 
