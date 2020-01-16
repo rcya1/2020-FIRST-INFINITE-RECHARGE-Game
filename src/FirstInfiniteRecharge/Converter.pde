@@ -48,54 +48,59 @@ public float gy(float ratio) {
     return ratio * FIELD_HEIGHT;
 }
 
-// public float getXRatio(float x) {
-//     if(topPadding) {
-//         return x / width;
-//     }
-//     else {
-//         float paddingWidth = (width - field.width) / 2;
-//         return (x - paddingWidth) / (width - paddingWidth * 2);
-//     }
-// }
+// converts pixel x to ratio
+public float getXRatio(float x) {
+    if(topPadding) {
+        return x / width;
+    }
+    else {
+        float paddingWidth = (width - field.width) / 2;
+        return (x - paddingWidth) / (width - paddingWidth * 2);
+    }
+}
 
-// public float getYRatio(float y) {
-//     if(topPadding) {
-//         float paddingHeight = (height - field.height) / 2;
-//         return (y - paddingHeight) / (height - paddingHeight * 2);
-//     }
-//     else {
-//         return y / height;
-//     }
-// }
+// converts pixel y to ratio
+public float getYRatio(float y) {
+    if(topPadding) {
+        float paddingHeight = (height - field.height) / 2;
+        return (y - paddingHeight) / (height - paddingHeight * 2);
+    }
+    else {
+        return y / height;
+    }
+}
 
-// public float getWRatio(float w) {
-//     if(topPadding) {
-//         return w / width;
-//     }
-//     else {
-//         float paddingWidth = (width - field.width) / 2;
-//         return w / (width - paddingWidth * 2);
-//     }
-// }
+// converts pixel dist to width ratio
+public float getWRatio(float dist) {
+    if(topPadding) {
+        return dist / width;
+    }
+    else {
+        float paddingWidth = (width - field.width) / 2;
+        return dist / (width - paddingWidth * 2);
+    }
+}
 
-// public float getHRatio(float h) {
-//     if(topPadding) {
-//         float paddingHeight = (height - field.height) / 2;
-//         return h / (height - paddingHeight * 2);
-//     }
-//     else {
-//         return h / height;
-//     }
-// }
+// converts pixel dist to height ratio
+public float getHRatio(float dist) {
+    if(topPadding) {
+        float paddingHeight = (height - field.height) / 2;
+        return dist / (height - paddingHeight * 2);
+    }
+    else {
+        return dist / height;
+    }
+}
 
-// int pressMouseX = 0, pressMouseY = 0;
+int pressMouseX = 0, pressMouseY = 0;
 
-// void mousePressed() {
-//     println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(mouseY));
-//     float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
-//     println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
-//     println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)) - 90);
+void mousePressed() {
+    println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(mouseY));
+    float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
+    println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
+    println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)));
+    println();
 
-//     pressMouseX = mouseX;
-//     pressMouseY = mouseY;
-// }
+    pressMouseX = mouseX;
+    pressMouseY = mouseY;
+}

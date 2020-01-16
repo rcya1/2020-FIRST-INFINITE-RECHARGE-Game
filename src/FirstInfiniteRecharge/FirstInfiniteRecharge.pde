@@ -95,20 +95,13 @@ void resetGame() {
         player1.removeFromWorld();
     }
 
-    player1 = new Robot(gx(0.1), gy(0.5), gx(0.04), gy(0.10), 0, RED, true);
+    player1 = new Robot(gx(0.1), gy(0.5), gx(0.08), gy(0.10), 0, RED, true);
 }
 
 void draw() {
-    // pushMatrix();
-
-    // scale(1, -1);
-    // translate(0, -height);
-
     update();
     showBackground();
     showSprites();
-
-    // popMatrix();
 }
 
 void update() {

@@ -47,7 +47,6 @@ class Boundary
             rectMode(CENTER);
             fill(255, 0, 0);
             Vec2 loc = body.getTransform().p;
-            println(loc);
 
             translate(cx(loc.x), height - cy(loc.y));
             rotate(-body.getAngle());
