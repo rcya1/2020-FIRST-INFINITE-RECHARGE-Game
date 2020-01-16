@@ -27,11 +27,12 @@ float scalingFactor;
 
 void setup() {
     size(1000, 600);
+    // size(500, 300);
     // fullScreen();
     frameRate(FPS);
     setupImages();
 
-    box2D = new Box2DProcessing(this, 10); // TODO fix scaling factor
+    box2D = new Box2DProcessing(this, 10);
     box2D.createWorld();
     box2D.listenForCollisions();
     box2D.setGravity(0, 0);
@@ -42,29 +43,30 @@ void setup() {
     resetGame();
 
     boundaries = new ArrayList<Boundary>(); // TODO Fix the boundaries
-    boundaries.add(new Boundary(cx(0.056), cy(0.15), cw(0.110), ch(0.036), -20.36)); // top left wall
-    boundaries.add(new Boundary(cx(0.037), cy(0.5), cw(0.021), ch(0.46), 90)); // left wall
-    boundaries.add(new Boundary(cx(0.056), cy(0.85), cw(0.110), ch(0.036), 20.36)); // bot left wall
+    boundaries.add(new Boundary(gx(0.5), gy(0.5), gx(0.1), gy(0.1), 45));
+    // boundaries.add(new Boundary(0.056, 0.15, 0.110, 0.036, -20.36)); // top left wall
+    // boundaries.add(new Boundary(0.037, 0.5, 0.021, 0.46, 90)); // left wall
+    // boundaries.add(new Boundary(0.056, 0.85, 0.110, 0.036, 20.36)); // bot left wall
     
-    boundaries.add(new Boundary(cx(0.944), cy(0.85), cw(0.110), ch(0.036), -20.36)); // bot right wall
-    boundaries.add(new Boundary(cx(0.963), cy(0.5), cw(0.021), ch(0.46), 90)); // right wall
-    boundaries.add(new Boundary(cx(0.944), cy(0.15), cw(0.110), ch(0.036), 20.36)); // top right wall
+    // boundaries.add(new Boundary(0.944, 0.85, 0.110, 0.036, -20.36)); // bot right wall
+    // boundaries.add(new Boundary(0.963, 0.5, 0.021, 0.46, 90)); // right wall
+    // boundaries.add(new Boundary(0.944, 0.15, 0.110, 0.036, 20.36)); // top right wall
     
-    boundaries.add(new Boundary(cx(0.5), cy(0.054), cw(0.838), ch(0.008), 90)); // top wall
-    boundaries.add(new Boundary(cx(0.5), cy(0.946), cw(0.838), ch(0.008), 90)); // bot wall
+    // boundaries.add(new Boundary(0.5, 0.054, 0.838, 0.008, 90)); // top wall
+    // boundaries.add(new Boundary(0.5, 0.946, 0.838, 0.008, 90)); // bot wall
     
-    boundaries.add(new Boundary(cx(0.564), cy(0.130), cw(0.061), ch(0.139), 90)); // top wheel of fortune
-    boundaries.add(new Boundary(cx(0.564), cy(0.208), cw(0.045), ch(0.0067), 90)); // top wheel of fortune bot indent
-    boundaries.add(new Boundary(cx(0.436), cy(0.870), cw(0.061), ch(0.139), 90)); // bot wheel of fortune
-    boundaries.add(new Boundary(cx(0.436), cy(0.792), cw(0.045), ch(0.0067), 90)); // bot wheel of fortune top indent
+    // boundaries.add(new Boundary(0.564, 0.130, 0.061, 0.139, 90)); // top wheel of fortune
+    // boundaries.add(new Boundary(0.564, 0.208, 0.045, 0.0067, 90)); // top wheel of fortune bot indent
+    // boundaries.add(new Boundary(0.436, 0.870, 0.061, 0.139, 90)); // bot wheel of fortune
+    // boundaries.add(new Boundary(0.436, 0.792, 0.045, 0.0067, 90)); // bot wheel of fortune top indent
 
-    boundaries.add(new Boundary(cx(0.355), cy(0.400), cw(0.020), ch(0.032), 23)); // shield generator top left
-    boundaries.add(new Boundary(cx(0.563), cy(0.233), cw(0.020), ch(0.032), 23)); // shield generator top right
-    boundaries.add(new Boundary(cx(0.436), cy(0.763), cw(0.020), ch(0.032), 23)); // shield generator bot left
-    boundaries.add(new Boundary(cx(0.644), cy(0.598), cw(0.020), ch(0.032), 23)); // shield generator bot right
+    // boundaries.add(new Boundary(0.355, 0.400, 0.020, 0.032, 23)); // shield generator top left
+    // boundaries.add(new Boundary(0.563, 0.233, 0.020, 0.032, 23)); // shield generator top right
+    // boundaries.add(new Boundary(0.436, 0.763, 0.020, 0.032, 23)); // shield generator bot left
+    // boundaries.add(new Boundary(0.644, 0.598, 0.020, 0.032, 23)); // shield generator bot right
 
     powerCells = new ArrayList<PowerCell>();
-    powerCells.add(new PowerCell(cx(0.5), cy(0.5)));
+    // powerCells.add(new PowerCell(0.5, 0.5));
 }
 
 void setupImages() {
@@ -93,13 +95,20 @@ void resetGame() {
         player1.removeFromWorld();
     }
 
-    player1 = new Robot(cx(1./10), cy(1./2), cw(1./25), ch(1./10), 0, RED, true);
+    player1 = new Robot(gx(0.1), gy(0.5), gx(0.04), gy(0.10), 0, RED, true);
 }
 
 void draw() {
+    // pushMatrix();
+
+    // scale(1, -1);
+    // translate(0, -height);
+
     update();
     showBackground();
     showSprites();
+
+    // popMatrix();
 }
 
 void update() {
@@ -123,14 +132,14 @@ void showBackground() {
 
 void showSprites() {
     player1.show();
-    // for(Boundary boundary : boundaries) {
-    //     boundary.show();
-    // }
+    image(shieldGenerator, width / 2, height / 2);
+    for(Boundary boundary : boundaries) {
+        boundary.show();
+    }
     for(PowerCell powerCell : powerCells) {
         powerCell.show();
     }
     
-    image(shieldGenerator, width / 2, height / 2);
 }
 
 void keyPressed() {
@@ -144,5 +153,5 @@ void keyPressed() {
 
 void keyReleased() {
     keysPressed.remove(Character.toLowerCase(key));
-    keyCodes.remove(keyCode); 
+    keyCodes.remove(keyCode);
 }

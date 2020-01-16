@@ -19,15 +19,13 @@ class Boundary
     void setupBox2D(float x, float y, float angle) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.STATIC;
-        bodyDef.position = box2D.coordPixelsToWorld(x, y);
-        bodyDef.angle = radians(angle - 90);
+        bodyDef.position = new Vec2(x, y);
+        bodyDef.angle = radians(angle);
         
         body = box2D.createBody(bodyDef);
         
         PolygonShape shape = new PolygonShape();
-        float box2DWidth = box2D.scalarPixelsToWorld(w);
-        float box2DHeight = box2D.scalarPixelsToWorld(h);
-        shape.setAsBox(box2DWidth / 2, box2DHeight / 2);
+        shape.setAsBox(w / 2, h / 2);
         
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -48,10 +46,14 @@ class Boundary
         
             rectMode(CENTER);
             fill(255, 0, 0);
-            Vec2 loc = box2D.getBodyPixelCoord(body);
-            translate(loc.x, loc.y);
+            Vec2 loc = body.getTransform().p;
+            println(loc);
+
+            translate(cx(loc.x), height - cy(loc.y));
             rotate(-body.getAngle());
-            rect(0, 0, w, h);
+
+            rect(0, 0, cw(w), ch(h));
+            line(0, 0, cw(w) / 2, ch(-h) / 2);
         
         popMatrix();
     }
