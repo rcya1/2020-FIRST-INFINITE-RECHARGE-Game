@@ -72,24 +72,12 @@ public float getYRatio(float y) {
 
 // converts pixel dist to width ratio
 public float getWRatio(float dist) {
-    if(topPadding) {
-        return dist / width;
-    }
-    else {
-        float paddingWidth = (width - field.width) / 2;
-        return dist / (width - paddingWidth * 2);
-    }
+    return dist / field.width;
 }
 
 // converts pixel dist to height ratio
 public float getHRatio(float dist) {
-    if(topPadding) {
-        float paddingHeight = (height - field.height) / 2;
-        return dist / (height - paddingHeight * 2);
-    }
-    else {
-        return dist / height;
-    }
+    return dist / field.height;
 }
 
 int pressMouseX = 0, pressMouseY = 0;

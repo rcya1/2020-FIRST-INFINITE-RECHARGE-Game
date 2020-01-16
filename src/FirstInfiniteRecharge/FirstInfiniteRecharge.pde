@@ -43,7 +43,7 @@ void setup() {
     resetGame();
 
     boundaries = new ArrayList<Boundary>(); // TODO Fix the boundaries
-    boundaries.add(new Boundary(gx(0.5), gy(0.5), gx(0.1), gy(0.1), 45));
+    // boundaries.add(new Boundary(gx(0.5), gy(0.5), gx(0.1), gy(0.1), 45));
     // boundaries.add(new Boundary(0.056, 0.15, 0.110, 0.036, -20.36)); // top left wall
     // boundaries.add(new Boundary(0.037, 0.5, 0.021, 0.46, 90)); // left wall
     // boundaries.add(new Boundary(0.056, 0.85, 0.110, 0.036, 20.36)); // bot left wall
@@ -66,7 +66,7 @@ void setup() {
     // boundaries.add(new Boundary(0.644, 0.598, 0.020, 0.032, 23)); // shield generator bot right
 
     powerCells = new ArrayList<PowerCell>();
-    // powerCells.add(new PowerCell(0.5, 0.5));
+    powerCells.add(new PowerCell(gx(0.5), gy(0.5)));
 }
 
 void setupImages() {

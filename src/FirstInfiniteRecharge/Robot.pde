@@ -1,4 +1,5 @@
 class Robot {
+    
     float w, h;
     color robotColor;
     
