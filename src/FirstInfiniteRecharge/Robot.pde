@@ -12,8 +12,8 @@ class Robot {
     static final float RESTITUTION = 0.2;
     static final float DENSITY = 1;
 
-    static final float DRIVE_FORCE = 150000;
-    static final float TURN_TORQUE = 200000;
+    static final float DRIVE_FORCE = 75000;
+    static final float TURN_TORQUE = 100000;
     
     Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
         this.w = w;

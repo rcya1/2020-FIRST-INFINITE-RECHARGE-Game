@@ -67,7 +67,26 @@ void setup() {
     boundaries.add(new Boundary(gx(0.645), gy(0.400), gx(0.0165), gy(0.0315), 25)); // shield generator bot right
 
     powerCells = new ArrayList<PowerCell>();
-    powerCells.add(new PowerCell(gx(0.5), gy(0.5)));
+    powerCells.add(new PowerCell(gx(0.396), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.448), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.500), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.836)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.886)));
+    powerCells.add(new PowerCell(gx(0.384), gy(0.609)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.626)));
+    powerCells.add(new PowerCell(gx(0.375), gy(0.541)));
+    powerCells.add(new PowerCell(gx(0.385), gy(0.494)));
+    powerCells.add(new PowerCell(gx(0.394), gy(0.459)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.369)));
+    powerCells.add(new PowerCell(gx(0.615), gy(0.386)));
+    powerCells.add(new PowerCell(gx(0.625), gy(0.452)));
+    powerCells.add(new PowerCell(gx(0.615), gy(0.495)));
+    powerCells.add(new PowerCell(gx(0.606), gy(0.535)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.156)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.107)));
+    powerCells.add(new PowerCell(gx(0.499), gy(0.132)));
+    powerCells.add(new PowerCell(gx(0.552), gy(0.134)));
+    powerCells.add(new PowerCell(gx(0.603), gy(0.134)));
 }
 
 void setupImages() {
@@ -96,7 +115,7 @@ void resetGame() {
         player1.removeFromWorld();
     }
 
-    player1 = new Robot(gx(0.1), gy(0.5), gx(0.08), gy(0.10), 0, RED, true);
+    player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, true);
 }
 
 void draw() {
@@ -126,14 +145,13 @@ void showBackground() {
 
 void showSprites() {
     player1.show();
-    image(shieldGenerator, width / 2, height / 2);
-    for(Boundary boundary : boundaries) {
-        boundary.show();
-    }
     for(PowerCell powerCell : powerCells) {
         powerCell.show();
     }
-    
+    image(shieldGenerator, width / 2, height / 2);
+    // for(Boundary boundary : boundaries) {
+    //     boundary.show();
+    // }
 }
 
 void keyPressed() {
