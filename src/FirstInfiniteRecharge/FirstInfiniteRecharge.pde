@@ -43,27 +43,28 @@ void setup() {
     resetGame();
 
     boundaries = new ArrayList<Boundary>(); // TODO Fix the boundaries
-    // boundaries.add(new Boundary(gx(0.5), gy(0.5), gx(0.1), gy(0.1), 45));
-    // boundaries.add(new Boundary(0.056, 0.15, 0.110, 0.036, -20.36)); // top left wall
-    // boundaries.add(new Boundary(0.037, 0.5, 0.021, 0.46, 90)); // left wall
-    // boundaries.add(new Boundary(0.056, 0.85, 0.110, 0.036, 20.36)); // bot left wall
-    
-    // boundaries.add(new Boundary(0.944, 0.85, 0.110, 0.036, -20.36)); // bot right wall
-    // boundaries.add(new Boundary(0.963, 0.5, 0.021, 0.46, 90)); // right wall
-    // boundaries.add(new Boundary(0.944, 0.15, 0.110, 0.036, 20.36)); // top right wall
-    
-    // boundaries.add(new Boundary(0.5, 0.054, 0.838, 0.008, 90)); // top wall
-    // boundaries.add(new Boundary(0.5, 0.946, 0.838, 0.008, 90)); // bot wall
-    
-    // boundaries.add(new Boundary(0.564, 0.130, 0.061, 0.139, 90)); // top wheel of fortune
-    // boundaries.add(new Boundary(0.564, 0.208, 0.045, 0.0067, 90)); // top wheel of fortune bot indent
-    // boundaries.add(new Boundary(0.436, 0.870, 0.061, 0.139, 90)); // bot wheel of fortune
-    // boundaries.add(new Boundary(0.436, 0.792, 0.045, 0.0067, 90)); // bot wheel of fortune top indent
+    boundaries.add(new Boundary(gx(0.056), gy(0.85), gx(0.110), gy(0.04), 69.64)); // top left wall
+    boundaries.add(new Boundary(gx(0.035), gy(0.5), gx(0.256), gy(0.044), 90)); // left wall
+    boundaries.add(new Boundary(gx(0.054), gy(0.15), gx(0.110), gy(0.04), 110.36)); // bot left wall
 
-    // boundaries.add(new Boundary(0.355, 0.400, 0.020, 0.032, 23)); // shield generator top left
-    // boundaries.add(new Boundary(0.563, 0.233, 0.020, 0.032, 23)); // shield generator top right
-    // boundaries.add(new Boundary(0.436, 0.763, 0.020, 0.032, 23)); // shield generator bot left
-    // boundaries.add(new Boundary(0.644, 0.598, 0.020, 0.032, 23)); // shield generator bot right
+    boundaries.add(new Boundary(gx(0.944), gy(0.85), gx(0.110), gy(0.04), 110.36)); // top right wall
+    boundaries.add(new Boundary(gx(0.965), gy(0.5), gx(0.256), gy(0.044), 90)); // right wall
+    boundaries.add(new Boundary(gx(0.944), gy(0.15), gx(0.110), gy(0.04), 69.64)); // bot right wall
+
+    boundaries.add(new Boundary(gx(0.5), gy(0.941), gx(0.835), gy(0.0114), 0)); // top wall
+    boundaries.add(new Boundary(gx(0.5), gy(0.059), gx(0.835), gy(0.0114), 0)); // bot wall
+
+
+    boundaries.add(new Boundary(gx(0.565), gy(0.860), gx(0.06), gy(0.146), 0)); // top wheel of fortune
+    boundaries.add(new Boundary(gx(0.565), gy(0.786), gx(0.0430), gy(0.00950), 0)); // top wheel of fortune bot indent
+    boundaries.add(new Boundary(gx(0.435), gy(0.140), gx(0.06), gy(0.146), 0)); // bot wheel of fortune
+    boundaries.add(new Boundary(gx(0.435), gy(0.216), gx(0.0430), gy(0.00950), 0)); // bot wheel of fortune top indent
+
+
+    boundaries.add(new Boundary(gx(0.355), gy(0.600), gx(0.0165), gy(0.0315), 25)); // shield generator top left
+    boundaries.add(new Boundary(gx(0.565), gy(0.765), gx(0.0165), gy(0.0315), 25)); // shield generator top right
+    boundaries.add(new Boundary(gx(0.435), gy(0.235), gx(0.0165), gy(0.0315), 25)); // shield generator bot left
+    boundaries.add(new Boundary(gx(0.645), gy(0.400), gx(0.0165), gy(0.0315), 25)); // shield generator bot right
 
     powerCells = new ArrayList<PowerCell>();
     powerCells.add(new PowerCell(gx(0.5), gy(0.5)));

@@ -83,7 +83,7 @@ public float getHRatio(float dist) {
 int pressMouseX = 0, pressMouseY = 0;
 
 void mousePressed() {
-    println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(mouseY));
+    println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(height - mouseY));
     float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
     println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
     println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)));
