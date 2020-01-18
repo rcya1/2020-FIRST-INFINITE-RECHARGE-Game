@@ -15,6 +15,13 @@ HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
 
 Robot player1;
+
+int redStationAvailable;
+int blueStationAvailable;
+
+int redStationLastTime;
+int blueStationLastTime;
+
 ArrayList<Boundary> boundaries;
 ArrayList<PowerCell> powerCells;
 ArrayList<PowerCell> scheduleDelete;
@@ -73,8 +80,8 @@ void setup() {
     boundaries.add(new Boundary(gx(0.435), gy(0.235), gx(0.0165), gy(0.0315), 25)); // shield generator bot left
     boundaries.add(new Boundary(gx(0.645), gy(0.400), gx(0.0165), gy(0.0315), 25)); // shield generator bot right
 
-    boundaries.add((new Boundary(gx(0.035), gy(0.678), gx(0.065), gy(0.044), 90)).setGoal(true));
-    boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.065), gy(0.044), 90)).setGoal(false));
+    boundaries.add((new Boundary(gx(0.035), gy(0.678), gx(0.065), gy(0.044), 90)).setGoal(true)); // left (red) goal
+    boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.065), gy(0.044), 90)).setGoal(false)); // right (blue) goal
 }
 
 void setupImages() {
@@ -151,6 +158,17 @@ void update() {
     for(PowerCell powerCell : scheduleDelete) {
         powerCell.removeFromWorld();
     }
+
+    if(keysPressed.contains('q') && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
+        powerCells.add(new PowerCell(gx(0.948), gy(0.659), gx(-0.1), gy(0)));
+        redStationLastTime = millis();
+        redStationAvailable--;
+    }
+    if(keysPressed.contains('o') && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
+        powerCells.add(new PowerCell(gx(0.057), gy(0.328), gx(0.1), gy(0)));
+        blueStationLastTime = millis();
+        blueStationAvailable--;
+    }
     scheduleDelete.clear();
 
     // println(frameRate);
@@ -175,11 +193,13 @@ void showSprites() {
 
 void showOverlay() {
     textAlign(CENTER);
-    textSize(32);
+    textSize(56 / scalingFactor);
     fill(0);
     text("Red Score: " + redScore, width / 5, height / 20);
+    text("Red Available: " + redStationAvailable, width * 2 / 5, height / 20);
 
-    text("Blue Score: " + blueScore, width * 4 / 5, height / 20);
+    text("Blue Score: " + blueScore, width * 3 / 5, height / 20);
+    text("Blue Available: " + blueStationAvailable, width * 4 / 5, height / 20);
 }
 
 void keyPressed() {

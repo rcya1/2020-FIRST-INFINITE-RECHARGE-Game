@@ -15,6 +15,8 @@ class Robot {
     int numBalls;
     int lastShotTime;
     int goalStatus; // 0 - not touching, 1 - red, 2 - blue
+    float[] ballX;
+    float[] ballY;
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
@@ -38,6 +40,9 @@ class Robot {
         intaking = false;
         contactCells = new ArrayList<PowerCell>();
         numBalls = 0;
+
+        ballX = new float[] {-cw(w * 3 / 8), -cw(w * 3 / 8), -cw(w * 3 / 8), -cw(w * 1.5 / 8), -cw(w * 1.5 / 8)};
+        ballY = new float[] {ch(h / 4), ch(0), -ch(h / 4), ch(h / 8), -ch(h / 8)};
 
         setupBox2D(x, y, angle);
     }
@@ -83,7 +88,7 @@ class Robot {
     }
     
     void update(ArrayList<PowerCell> powerCells) {
-        if(shooting && goalStatus == 0) {
+        if(shooting && goalStatus == 0 && numBalls > 0) {
             if(millis() - lastShotTime >= TIME_BETWEEN_SHOTS) {
                 lastShotTime = millis();
                 numBalls--;
@@ -96,10 +101,12 @@ class Robot {
         else if(shooting && goalStatus != 0) {
             if(goalStatus == 1) {
                 redScore += numBalls;
+                blueStationAvailable += numBalls;
                 numBalls = 0;
             }
             else {
                 blueScore += numBalls;
+                redStationAvailable += numBalls;
                 numBalls = 0;
             }
         }
@@ -150,7 +157,12 @@ class Robot {
             stroke(0);
             fill(robotColor);
             rect(0, 0, cw(w), ch(h));
-            rect(cw(w / 2 - w / 8), 0, cw(w / 4), ch(w / 4));
+            rect(cw(w / 2 - w / 8), 0, cw(w / 4), ch(w / 2));
+
+            for(int i = 0; i < numBalls; i++) {
+                image(powerCell, ballX[i], ballY[i]);
+                println(ballX[i], ballY[i]);
+            }
         
         popMatrix();
     }

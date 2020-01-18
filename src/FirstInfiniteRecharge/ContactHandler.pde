@@ -38,9 +38,11 @@ public void handleCellBoundary(PowerCell cell, Boundary boundary) {
         if(speed > 1257 && speed < 2590) {
             if(boundary.isRed) {
                 redScore += 2;
+                blueStationAvailable++;
             }
             else {
                 blueScore += 2;
+                redStationAvailable++;
             }
             powerCells.remove(cell);
             scheduleDelete.add(cell);
