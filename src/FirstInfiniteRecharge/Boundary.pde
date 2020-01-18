@@ -32,6 +32,8 @@ class Boundary
         fixtureDef.density = DENSITY;
         fixtureDef.friction = FRICTION;
         fixtureDef.restitution = RESTITUTION;
+
+        fixtureDef.filter.categoryBits = CATEGORY_BOUNDARY;
         
         body.createFixture(fixtureDef);
     }

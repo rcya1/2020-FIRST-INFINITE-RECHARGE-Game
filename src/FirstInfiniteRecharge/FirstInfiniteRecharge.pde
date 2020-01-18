@@ -129,7 +129,7 @@ void update() {
 
     box2D.step();
 
-    player1.update();
+    player1.update(powerCells);
     for(PowerCell powerCell : powerCells) {
         powerCell.update();
     }

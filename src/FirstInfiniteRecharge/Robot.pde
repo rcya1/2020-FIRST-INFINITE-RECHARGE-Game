@@ -9,16 +9,21 @@ class Robot {
     Body body;
     Fixture fixture;
 
+    boolean shooting;
     boolean intaking;
-    PowerCell contactCell;
+    ArrayList<PowerCell> contactCells;
     int numBalls;
+    int lastShotTime;
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
     static final float DENSITY = 1;
 
     static final float DRIVE_FORCE = 75000;
-    static final float TURN_TORQUE = 100000;
+    static final float TURN_TORQUE = 125000;
+
+    static final int TIME_BETWEEN_SHOTS = 500; // millis
+    static final int SHOOTER_SPEED = 750;
     
     Robot(float x, float y, float w, float h, float angle, color robotColor, color intakeColor, boolean wasd) {
         this.w = w;
@@ -30,7 +35,7 @@ class Robot {
         this.wasd = wasd;
 
         intaking = false;
-        contactCell = null;
+        contactCells = new ArrayList<PowerCell>();
         numBalls = 0;
 
         setupBox2D(x, y, angle);
@@ -41,8 +46,9 @@ class Robot {
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = new Vec2(x, y);
         bodyDef.angle = radians(angle);
+
         bodyDef.linearDamping = 7.5;
-        bodyDef.angularDamping = 7.5;
+        bodyDef.angularDamping = 6.5;
         
         body = box2D.createBody(bodyDef);
         
@@ -75,20 +81,42 @@ class Robot {
         body.createFixture(intakeFixtureDef);
     }
     
-    void update() {
-        if(intaking && contactCell != null && numBalls < 5) {
-            contactCell.removeFromWorld();
-            contactCell = null;
-            numBalls++;
+    void update(ArrayList<PowerCell> powerCells) {
+        if(shooting) {
+            if(millis() - lastShotTime >= TIME_BETWEEN_SHOTS) {
+                lastShotTime = millis();
+                numBalls--;
+                Vec2 loc = body.getTransform().p;
+                powerCells.add(new PowerCell(loc.x, loc.y,
+                    cos(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().x, 
+                    sin(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().y));
+            }
+        }
+        else if(intaking) {
+            Iterator<PowerCell> iterator = powerCells.iterator();
+            while(iterator.hasNext()) {
+                PowerCell powerCell = iterator.next();
+
+                if(numBalls >= 5) {
+                    break;
+                }
+
+                if(contactCells.contains(powerCell)) {
+                    powerCell.removeFromWorld();
+                    contactCells.remove(powerCell);
+                    iterator.remove();
+                    numBalls++;
+                }
+            }
         }
     }
 
     void contactCell(PowerCell cell) {
-        this.contactCell = cell;
+        contactCells.add(cell);
     }
 
     void endContactCell(PowerCell cell) {
-        this.contactCell = null;
+        contactCells.remove(cell);
     }
     
     void applyForce(PVector force) {
@@ -117,23 +145,55 @@ class Robot {
     }
     
     void handleInput(HashSet<Character> keys, HashSet<Integer> keyCodes) {
-        if((keys.contains('d') && wasd) || ((keys.contains('\'') || keys.contains('"')) && !wasd)) {
-            applyTorque(-TURN_TORQUE);
-        }
+        if(wasd) {
+            if(keys.contains('d')) {
+                turnClock();
+            }
+            if(keys.contains('a')) {
+                turnCounter();
+            }
+            if(keys.contains('w')) {
+                moveForward();
+            }
+            if(keys.contains('s')) {
+                moveBackward();
+            }
 
-        if((keys.contains('a') && wasd) || (keys.contains('l') && !wasd)) {
-            applyTorque(TURN_TORQUE);
+            intaking = keys.contains('f');
+            shooting = keys.contains(' ');
         }
+        else {
+            if(keys.contains('\'') || keys.contains('\"')) {
+                turnClock();
+            }
+            if(keys.contains('l')) {
+                turnCounter();
+            }
+            if(keys.contains('p')) {
+                moveForward();
+            }
+            if(keys.contains(';') || keys.contains(':')) {
+                moveBackward();
+            }
+        }
+    }
 
-        if((keys.contains('w') && wasd) || (keys.contains('p') && !wasd)) {
-            PVector moveForce = PVector.fromAngle(body.getAngle()).mult(DRIVE_FORCE);
-            applyForce(moveForce);
-        }
+    void turnClock() {
+        applyTorque(-TURN_TORQUE);
+    }
 
-        if((keys.contains('s') && wasd) || ((keys.contains(';') || keys.contains(':')) && !wasd)) {
-            PVector moveForce = PVector.fromAngle(body.getAngle() + PI).mult(DRIVE_FORCE);
-            applyForce(moveForce);
-        }
+    void turnCounter() {
+        applyTorque(TURN_TORQUE);
+    }
+
+    void moveForward() {
+        PVector moveForce = PVector.fromAngle(body.getAngle()).mult(DRIVE_FORCE);
+        applyForce(moveForce);
+    }
+
+    void moveBackward() {
+        PVector moveForce = PVector.fromAngle(body.getAngle() + PI).mult(DRIVE_FORCE);
+        applyForce(moveForce);
     }
 
     void removeFromWorld() {
