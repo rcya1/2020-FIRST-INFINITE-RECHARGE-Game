@@ -161,7 +161,6 @@ class Robot {
 
             for(int i = 0; i < numBalls; i++) {
                 image(powerCell, ballX[i], ballY[i]);
-                println(ballX[i], ballY[i]);
             }
         
         popMatrix();

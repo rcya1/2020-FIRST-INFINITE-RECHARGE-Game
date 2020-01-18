@@ -34,7 +34,7 @@ public void handleRobotCell(Robot robot, PowerCell cell) {
 public void handleCellBoundary(PowerCell cell, Boundary boundary) {
     if(boundary.isGoal) {
         float speed = cell.getLinearVelocitySquared();
-        println(speed);
+        // println(speed);
         if(speed > 1257 && speed < 2590) {
             if(boundary.isRed) {
                 redScore += 2;

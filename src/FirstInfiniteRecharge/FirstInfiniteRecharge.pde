@@ -187,12 +187,15 @@ void showSprites() {
         powerCell.show();
     }
     image(shieldGenerator, width / 2, height / 2);
-    for(Boundary boundary : boundaries) {
-        boundary.show();
-    }
+    // for(Boundary boundary : boundaries) {
+    //     boundary.show();
+    // }
 }
 
 void showOverlay() {
+    fill(200);
+    rect(width / 2, height / 30, width, height / 15);
+
     textAlign(CENTER);
     textSize(56 / scalingFactor);
     fill(0);
