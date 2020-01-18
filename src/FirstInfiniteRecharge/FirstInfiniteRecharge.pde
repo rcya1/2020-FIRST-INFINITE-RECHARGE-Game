@@ -42,7 +42,7 @@ void setup() {
 
     resetGame();
 
-    boundaries = new ArrayList<Boundary>(); // TODO Fix the boundaries
+    boundaries = new ArrayList<Boundary>();
     boundaries.add(new Boundary(gx(0.056), gy(0.85), gx(0.110), gy(0.04), 69.64)); // top left wall
     boundaries.add(new Boundary(gx(0.035), gy(0.5), gx(0.256), gy(0.044), 90)); // left wall
     boundaries.add(new Boundary(gx(0.054), gy(0.15), gx(0.110), gy(0.04), 110.36)); // bot left wall
@@ -115,7 +115,7 @@ void resetGame() {
         player1.removeFromWorld();
     }
 
-    player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, true);
+    player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true);
 }
 
 void draw() {

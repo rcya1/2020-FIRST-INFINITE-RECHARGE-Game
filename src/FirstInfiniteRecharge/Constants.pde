@@ -1,4 +1,5 @@
 final color RED = color(255, 175, 175);
+final color RED_LIGHTER = color(200, 175, 175);
 
 final float FIELD_WIDTH = 277.2;
 final float FIELD_HEIGHT = 146.3;

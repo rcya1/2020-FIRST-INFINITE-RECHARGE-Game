@@ -2,11 +2,16 @@ class Robot {
     
     float w, h;
     color robotColor;
+    color intakeColor;
     
     boolean wasd;
     
     Body body;
     Fixture fixture;
+
+    boolean intaking;
+    PowerCell contactCell;
+    int numBalls;
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
@@ -15,13 +20,18 @@ class Robot {
     static final float DRIVE_FORCE = 75000;
     static final float TURN_TORQUE = 100000;
     
-    Robot(float x, float y, float w, float h, float angle, color robotColor, boolean wasd) {
+    Robot(float x, float y, float w, float h, float angle, color robotColor, color intakeColor, boolean wasd) {
         this.w = w;
         this.h = h;
         
         this.robotColor = robotColor;
+        this.intakeColor = intakeColor;
         
         this.wasd = wasd;
+
+        intaking = false;
+        contactCell = null;
+        numBalls = 0;
 
         setupBox2D(x, y, angle);
     }
@@ -49,10 +59,36 @@ class Robot {
         fixtureDef.filter.maskBits = MASK_ROBOT;
         
         fixture = body.createFixture(fixtureDef);
+
+        PolygonShape intakeShape = new PolygonShape();
+        Vec2 offset = new Vec2(w / 2 - w / 8, 0);
+        intakeShape.setAsBox(w / 4, w / 4, offset, 0);
+
+        FixtureDef intakeFixtureDef = new FixtureDef();
+        intakeFixtureDef.shape = intakeShape;
+        intakeFixtureDef.density = DENSITY;
+        intakeFixtureDef.friction = FRICTION;
+        intakeFixtureDef.restitution = RESTITUTION;
+        intakeFixtureDef.isSensor = true;
+        intakeFixtureDef.setUserData(this);
+
+        body.createFixture(intakeFixtureDef);
     }
     
     void update() {
-        
+        if(intaking && contactCell != null && numBalls < 5) {
+            contactCell.removeFromWorld();
+            contactCell = null;
+            numBalls++;
+        }
+    }
+
+    void contactCell(PowerCell cell) {
+        this.contactCell = cell;
+    }
+
+    void endContactCell(PowerCell cell) {
+        this.contactCell = null;
     }
     
     void applyForce(PVector force) {
@@ -75,6 +111,7 @@ class Robot {
             stroke(0);
             fill(robotColor);
             rect(0, 0, cw(w), ch(h));
+            rect(cw(w / 2 - w / 8), 0, cw(w / 4), ch(w / 4));
         
         popMatrix();
     }
