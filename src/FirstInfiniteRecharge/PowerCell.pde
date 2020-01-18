@@ -70,10 +70,16 @@ class PowerCell {
     }
     
     void update() {
-        if(body.getLinearVelocity().lengthSquared() < 400) {
-            setNormal();
-            airborne = false;
+        if(!destroyed) {
+            if(getLinearVelocitySquared() < 400) {
+                setNormal();
+                airborne = false;
+            }
         }
+    }
+
+    float getLinearVelocitySquared() {
+        return body.getLinearVelocity().lengthSquared();
     }
     
     void show() {

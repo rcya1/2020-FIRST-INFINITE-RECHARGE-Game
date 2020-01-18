@@ -17,6 +17,10 @@ HashSet<Integer> keyCodes;
 Robot player1;
 ArrayList<Boundary> boundaries;
 ArrayList<PowerCell> powerCells;
+ArrayList<PowerCell> scheduleDelete;
+
+int redScore;
+int blueScore;
 
 PImage field;
 PImage shieldGenerator;
@@ -39,6 +43,9 @@ void setup() {
 
     keysPressed = new HashSet<Character>();
     keyCodes = new HashSet<Integer>();
+
+    powerCells = new ArrayList<PowerCell>();
+    scheduleDelete = new ArrayList<PowerCell>();
 
     resetGame();
 
@@ -66,27 +73,8 @@ void setup() {
     boundaries.add(new Boundary(gx(0.435), gy(0.235), gx(0.0165), gy(0.0315), 25)); // shield generator bot left
     boundaries.add(new Boundary(gx(0.645), gy(0.400), gx(0.0165), gy(0.0315), 25)); // shield generator bot right
 
-    powerCells = new ArrayList<PowerCell>();
-    powerCells.add(new PowerCell(gx(0.396), gy(0.863)));
-    powerCells.add(new PowerCell(gx(0.448), gy(0.863)));
-    powerCells.add(new PowerCell(gx(0.500), gy(0.863)));
-    powerCells.add(new PowerCell(gx(0.592), gy(0.836)));
-    powerCells.add(new PowerCell(gx(0.592), gy(0.886)));
-    powerCells.add(new PowerCell(gx(0.384), gy(0.609)));
-    powerCells.add(new PowerCell(gx(0.407), gy(0.626)));
-    powerCells.add(new PowerCell(gx(0.375), gy(0.541)));
-    powerCells.add(new PowerCell(gx(0.385), gy(0.494)));
-    powerCells.add(new PowerCell(gx(0.394), gy(0.459)));
-    powerCells.add(new PowerCell(gx(0.592), gy(0.369)));
-    powerCells.add(new PowerCell(gx(0.615), gy(0.386)));
-    powerCells.add(new PowerCell(gx(0.625), gy(0.452)));
-    powerCells.add(new PowerCell(gx(0.615), gy(0.495)));
-    powerCells.add(new PowerCell(gx(0.606), gy(0.535)));
-    powerCells.add(new PowerCell(gx(0.407), gy(0.156)));
-    powerCells.add(new PowerCell(gx(0.407), gy(0.107)));
-    powerCells.add(new PowerCell(gx(0.499), gy(0.132)));
-    powerCells.add(new PowerCell(gx(0.552), gy(0.134)));
-    powerCells.add(new PowerCell(gx(0.603), gy(0.134)));
+    boundaries.add((new Boundary(gx(0.035), gy(0.678), gx(0.061), gy(0.050), 90)).setGoal(true));
+    boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.061), gy(0.050), 90)).setGoal(false));
 }
 
 void setupImages() {
@@ -116,12 +104,38 @@ void resetGame() {
     }
 
     player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true);
+
+    powerCells.clear();
+    powerCells.add(new PowerCell(gx(0.396), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.448), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.500), gy(0.863)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.836)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.886)));
+    powerCells.add(new PowerCell(gx(0.384), gy(0.609)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.626)));
+    powerCells.add(new PowerCell(gx(0.375), gy(0.541)));
+    powerCells.add(new PowerCell(gx(0.385), gy(0.494)));
+    powerCells.add(new PowerCell(gx(0.394), gy(0.459)));
+    powerCells.add(new PowerCell(gx(0.592), gy(0.369)));
+    powerCells.add(new PowerCell(gx(0.615), gy(0.386)));
+    powerCells.add(new PowerCell(gx(0.625), gy(0.452)));
+    powerCells.add(new PowerCell(gx(0.615), gy(0.495)));
+    powerCells.add(new PowerCell(gx(0.606), gy(0.535)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.156)));
+    powerCells.add(new PowerCell(gx(0.407), gy(0.107)));
+    powerCells.add(new PowerCell(gx(0.499), gy(0.132)));
+    powerCells.add(new PowerCell(gx(0.552), gy(0.134)));
+    powerCells.add(new PowerCell(gx(0.603), gy(0.134)));
+
+    redScore = 0;
+    blueScore = 0;
 }
 
 void draw() {
     update();
     showBackground();
     showSprites();
+    showOverlay();
 }
 
 void update() {
@@ -133,6 +147,11 @@ void update() {
     for(PowerCell powerCell : powerCells) {
         powerCell.update();
     }
+
+    for(PowerCell powerCell : scheduleDelete) {
+        powerCell.removeFromWorld();
+    }
+    scheduleDelete.clear();
 
     // println(frameRate);
 }
@@ -152,6 +171,15 @@ void showSprites() {
     // for(Boundary boundary : boundaries) {
     //     boundary.show();
     // }
+}
+
+void showOverlay() {
+    textAlign(CENTER);
+    textSize(32);
+    fill(0);
+    text("Red Score: " + redScore, width / 5, height / 20);
+
+    text("Blue Score: " + blueScore, width * 4 / 5, height / 20);
 }
 
 void keyPressed() {

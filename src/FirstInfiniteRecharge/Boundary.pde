@@ -1,7 +1,8 @@
 class Boundary
 {
     float w, h;
-    boolean counted;
+    boolean isGoal;
+    boolean isRed;
     
     Body body;
 
@@ -12,6 +13,9 @@ class Boundary
     Boundary(float x, float y, float w, float h, float angle) {
         this.w = w;
         this.h = h;
+
+        this.isGoal = false;
+        this.isRed = false;
 
         setupBox2D(x, y, angle);
     }
@@ -32,10 +36,23 @@ class Boundary
         fixtureDef.density = DENSITY;
         fixtureDef.friction = FRICTION;
         fixtureDef.restitution = RESTITUTION;
+        fixtureDef.setUserData(this);
 
         fixtureDef.filter.categoryBits = CATEGORY_BOUNDARY;
         
         body.createFixture(fixtureDef);
+    }
+
+    Boundary setGoal(boolean isRed) {
+        this.isGoal = true;
+        this.isRed = isRed;
+
+        Filter filter = new Filter();
+        filter.categoryBits = CATEGORY_GOAL;
+        filter.maskBits = MASK_GOAL;
+        body.getFixtureList().setFilterData(filter);
+
+        return this;
     }
     
     void update() {
