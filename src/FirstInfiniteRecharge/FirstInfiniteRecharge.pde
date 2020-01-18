@@ -73,8 +73,8 @@ void setup() {
     boundaries.add(new Boundary(gx(0.435), gy(0.235), gx(0.0165), gy(0.0315), 25)); // shield generator bot left
     boundaries.add(new Boundary(gx(0.645), gy(0.400), gx(0.0165), gy(0.0315), 25)); // shield generator bot right
 
-    boundaries.add((new Boundary(gx(0.035), gy(0.678), gx(0.061), gy(0.050), 90)).setGoal(true));
-    boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.061), gy(0.050), 90)).setGoal(false));
+    boundaries.add((new Boundary(gx(0.035), gy(0.678), gx(0.065), gy(0.044), 90)).setGoal(true));
+    boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.065), gy(0.044), 90)).setGoal(false));
 }
 
 void setupImages() {
@@ -168,9 +168,9 @@ void showSprites() {
         powerCell.show();
     }
     image(shieldGenerator, width / 2, height / 2);
-    // for(Boundary boundary : boundaries) {
-    //     boundary.show();
-    // }
+    for(Boundary boundary : boundaries) {
+        boundary.show();
+    }
 }
 
 void showOverlay() {

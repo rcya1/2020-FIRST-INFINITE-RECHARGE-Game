@@ -14,6 +14,7 @@ class Robot {
     ArrayList<PowerCell> contactCells;
     int numBalls;
     int lastShotTime;
+    int goalStatus; // 0 - not touching, 1 - red, 2 - blue
 
     static final float FRICTION = 0.7;
     static final float RESTITUTION = 0.2;
@@ -82,7 +83,7 @@ class Robot {
     }
     
     void update(ArrayList<PowerCell> powerCells) {
-        if(shooting) {
+        if(shooting && goalStatus == 0) {
             if(millis() - lastShotTime >= TIME_BETWEEN_SHOTS) {
                 lastShotTime = millis();
                 numBalls--;
@@ -90,6 +91,16 @@ class Robot {
                 powerCells.add(new PowerCell(loc.x, loc.y,
                     cos(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().x, 
                     sin(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().y));
+            }
+        }
+        else if(shooting && goalStatus != 0) {
+            if(goalStatus == 1) {
+                redScore += numBalls;
+                numBalls = 0;
+            }
+            else {
+                blueScore += numBalls;
+                numBalls = 0;
             }
         }
         else if(intaking) {
@@ -194,6 +205,14 @@ class Robot {
     void moveBackward() {
         PVector moveForce = PVector.fromAngle(body.getAngle() + PI).mult(DRIVE_FORCE);
         applyForce(moveForce);
+    }
+
+    void setGoal(boolean isRed) {
+        goalStatus = isRed ? 1 : 2;
+    }
+
+    void removeGoal() {
+        goalStatus = 0;
     }
 
     void removeFromWorld() {

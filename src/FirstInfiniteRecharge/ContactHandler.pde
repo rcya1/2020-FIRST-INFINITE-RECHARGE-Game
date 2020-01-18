@@ -18,6 +18,13 @@ void beginContact(Contact contact) {
     else if(o2 instanceof PowerCell && o1 instanceof Boundary) {
         handleCellBoundary((PowerCell) o2, (Boundary) o1);
     }
+
+    if(o1 instanceof Robot && o2 instanceof Boundary) {
+        handleRobotBoundary((Robot) o1, (Boundary) o2);
+    }
+    else if(o2 instanceof Robot && o1 instanceof Boundary) {
+        handleRobotBoundary((Robot) o2, (Boundary) o1);
+    }
 }
 
 public void handleRobotCell(Robot robot, PowerCell cell) {
@@ -41,6 +48,12 @@ public void handleCellBoundary(PowerCell cell, Boundary boundary) {
     }
 }
 
+public void handleRobotBoundary(Robot robot, Boundary boundary) {
+    if(boundary.isGoal) {
+        robot.setGoal(boundary.isRed);
+    }
+}
+
 void endContact(Contact contact) {
     Fixture fixture1 = contact.getFixtureA();
     Fixture fixture2 = contact.getFixtureB();
@@ -49,15 +62,26 @@ void endContact(Contact contact) {
     Object o2 = fixture2.getUserData();
 
     if(o1 instanceof Robot && o2 instanceof PowerCell) {
-        Robot robot = (Robot) o1;
-        PowerCell cell = (PowerCell) o2;
-        
-        robot.endContactCell(cell);
+        endHandleRobotCell((Robot) o1, (PowerCell) o2);
     }
     else if(o2 instanceof Robot && o1 instanceof PowerCell) {
-        Robot robot = (Robot) o2;
-        PowerCell cell = (PowerCell) o1;
-        
-        robot.endContactCell(cell);
+        endHandleRobotCell((Robot) o2, (PowerCell) o1);
+    }
+
+    if(o1 instanceof Robot && o2 instanceof Boundary) {
+        endHandleRobotBoundary((Robot) o1, (Boundary) o2);
+    }
+    else if(o2 instanceof Robot && o1 instanceof Boundary) {
+        endHandleRobotBoundary((Robot) o2, (Boundary) o1);
+    }
+}
+
+public void endHandleRobotCell(Robot robot, PowerCell cell) {
+    robot.endContactCell(cell);
+}
+
+public void endHandleRobotBoundary(Robot robot, Boundary boundary) {
+    if(boundary.isGoal) {
+        robot.removeGoal();
     }
 }

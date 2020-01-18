@@ -48,8 +48,6 @@ class Boundary
         this.isRed = isRed;
 
         Filter filter = new Filter();
-        filter.categoryBits = CATEGORY_GOAL;
-        filter.maskBits = MASK_GOAL;
         body.getFixtureList().setFilterData(filter);
 
         return this;
