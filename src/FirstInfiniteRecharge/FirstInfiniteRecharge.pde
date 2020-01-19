@@ -37,7 +37,7 @@ PImage powerCell;
 boolean topPadding;
 float scalingFactor;
 
-// TODO Add trench run, fix tape with the shield generator, and add 15 station limit
+// TODO Add 15 station limit
 void setup() {
     size(1000, 600);
     // size(500, 300);
