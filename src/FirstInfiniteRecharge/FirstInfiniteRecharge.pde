@@ -167,8 +167,8 @@ void resetGame() {
 
     redScore = 0;
     blueScore = 0;
-    redStationAvailable = 0;
-    blueStationAvailable = 0;
+    redStationAvailable = 5;
+    blueStationAvailable = 5;
 }
 
 /**
@@ -198,12 +198,13 @@ void update() {
         powerCell.removeFromWorld();
     }
 
-    if(keysPressed.contains('q') && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
+    // eject balls from stations if commanded to or forced to by the number in reserve
+    if((keysPressed.contains('q') || redStationAvailable > 14) && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
         powerCells.add(new PowerCell(gx(0.948), gy(0.659), gx(-0.1), gy(0)));
         redStationLastTime = millis();
         redStationAvailable--;
     }
-    if(keysPressed.contains('o') && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
+    if((keysPressed.contains('o') || blueStationAvailable > 14) && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
         powerCells.add(new PowerCell(gx(0.057), gy(0.328), gx(0.1), gy(0)));
         blueStationLastTime = millis();
         blueStationAvailable--;

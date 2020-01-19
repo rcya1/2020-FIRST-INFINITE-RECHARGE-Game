@@ -49,7 +49,7 @@ class Robot {
 
         intaking = false;
         contactCells = new ArrayList<PowerCell>();
-        numBalls = 0;
+        numBalls = 3;
 
         // set up the positions for the balls to be drawn in the back of the robot
         ballX = new float[] {-cw(w * 3 / 8), -cw(w * 3 / 8), -cw(w * 3 / 8), -cw(w * 1.5 / 8), -cw(w * 1.5 / 8)};
