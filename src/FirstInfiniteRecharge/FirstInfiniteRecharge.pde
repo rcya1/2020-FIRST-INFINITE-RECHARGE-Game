@@ -7,37 +7,47 @@ import org.jbox2d.common.*;
 
 import java.util.*;
 
-Box2DProcessing box2D;
+Box2DProcessing box2D; // Box2D world for handling physics
 
-final int FPS = 60;
+final int FPS = 60; // frames per second
 
+// the currently pressed keys
 HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
 
+// players
 Robot player1;
 
+// how many balls are available in each station
 int redStationAvailable;
 int blueStationAvailable;
 
+// last time that the stations ejected ball. Used for handling timing between balls
 int redStationLastTime;
 int blueStationLastTime;
 
-ArrayList<Boundary> boundaries;
-ArrayList<PowerCell> powerCells;
-ArrayList<PowerCell> scheduleDelete;
+ArrayList<Boundary> boundaries; // list of all boundaries
+ArrayList<PowerCell> powerCells; // list of all Power Cells
+ArrayList<PowerCell> scheduleDelete; // list of all Power Cells scheduled to be deleted
 
+// game scores
 int redScore;
 int blueScore;
 
+// all images used by the game
 PImage field;
 PImage shieldGenerator;
 PImage trench;
 PImage powerCell;
 
-boolean topPadding;
-float scalingFactor;
+boolean topPadding; // whether or not the padding for the screen is on the top or the sides
+float scalingFactor; // how much the field image was scaled down by
 
 // TODO Add 15 station limit
+
+/**
+ * Set up all of the variables in the game
+ */
 void setup() {
     size(1000, 600);
     // size(500, 300);
@@ -58,6 +68,7 @@ void setup() {
 
     resetGame();
 
+    // set up all boundaries
     boundaries = new ArrayList<Boundary>();
     boundaries.add(new Boundary(gx(0.056), gy(0.85), gx(0.110), gy(0.04), 69.64)); // top left wall
     boundaries.add(new Boundary(gx(0.035), gy(0.5), gx(0.256), gy(0.044), 90)); // left wall
@@ -84,12 +95,16 @@ void setup() {
     boundaries.add((new Boundary(gx(0.965), gy(0.3125), gx(0.065), gy(0.044), 90)).setGoal(false)); // right (blue) goal
 }
 
+/**
+ * Load all images and resize them to fit the screen
+ */
 void setupImages() {
     field = loadImage("img/Field.png");
     shieldGenerator = loadImage("img/ShieldGenerator.png");
     trench = loadImage("img/Trench.png");
     powerCell = loadImage("img/PowerCell.png");
 
+    // scale differently depending on which dimension is smaller
     if(((float) width) / field.width > ((float) height) / field.height) {
         scalingFactor = ((float) field.height) / height;
         field.resize(0, height);
@@ -108,6 +123,9 @@ void setupImages() {
     powerCell.resize((int) (powerCell.width / scalingFactor), 0);
 }
 
+/**
+ * Reset all robots, game pieces, and scores
+ */
 void resetGame() {
     if(player1 != null) {
         player1.removeFromWorld();
@@ -149,8 +167,13 @@ void resetGame() {
 
     redScore = 0;
     blueScore = 0;
+    redStationAvailable = 0;
+    blueStationAvailable = 0;
 }
 
+/**
+ * Update and draw the entire game
+ */
 void draw() {
     update();
     showBackground();
@@ -158,6 +181,9 @@ void draw() {
     showOverlay();
 }
 
+/**
+ * Update the physics and inputs of everything
+ */
 void update() {
     player1.handleInput(keysPressed, keyCodes);
 
@@ -187,12 +213,18 @@ void update() {
     // println(frameRate);
 }
 
+/** 
+ * Display the field image
+ */
 void showBackground() {
     background(200);
     imageMode(CENTER);
     image(field, width / 2, height / 2);
 }
 
+/** 
+ * Display the sprites such as the players, Power Cells, and overlaying field elements
+ */
 void showSprites() {
     player1.show();
     for(PowerCell powerCell : powerCells) {
@@ -205,6 +237,9 @@ void showSprites() {
     // }
 }
 
+/**
+ * Draw the top overlay
+ */
 void showOverlay() {
     fill(200);
     rect(width / 2, height / 30, width, height / 15);
@@ -219,6 +254,9 @@ void showOverlay() {
     text("Blue Available: " + blueStationAvailable, width * 4 / 5, height / 20);
 }
 
+/**
+ * Register all keys that were pressed
+ */
 void keyPressed() {
     keysPressed.add(Character.toLowerCase(key));
     keyCodes.add(keyCode);
@@ -228,6 +266,9 @@ void keyPressed() {
     }
 }
 
+/** 
+ * Unregister all keys that were released 
+ */
 void keyReleased() {
     keysPressed.remove(Character.toLowerCase(key));
     keyCodes.remove(keyCode);

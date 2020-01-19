@@ -1,3 +1,6 @@
+/**
+ * Call extra code when two objects collide with each other
+ */
 void beginContact(Contact contact) {
     Fixture fixture1 = contact.getFixtureA();
     Fixture fixture2 = contact.getFixtureB();
@@ -27,14 +30,24 @@ void beginContact(Contact contact) {
     }
 }
 
+/**
+ * Handle collision when a robot's intake hits a Power Cell
+ * Registers the Power Cell with the robot as currently touching
+ */
 public void handleRobotCell(Robot robot, PowerCell cell) {
     robot.contactCell(cell);
 }
 
+/**
+ * Handle collision when a power cell hits a boundary
+ * Checks if the boundary is a goal and then does a check on the speed to see if it will go in
+ */
 public void handleCellBoundary(PowerCell cell, Boundary boundary) {
     if(boundary.isGoal) {
         float speed = cell.getLinearVelocitySquared();
         // println(speed);
+
+        // randomly chosen numbers btw
         if(speed > 1257 && speed < 2590) {
             if(boundary.isRed) {
                 redScore += 2;
@@ -50,12 +63,20 @@ public void handleCellBoundary(PowerCell cell, Boundary boundary) {
     }
 }
 
+
+/**
+ * Handle collision when a robot hits a boundary
+ * Registers the boundary with the robot if the boundary is a goal
+ */
 public void handleRobotBoundary(Robot robot, Boundary boundary) {
     if(boundary.isGoal) {
         robot.setGoal(boundary.isRed);
     }
 }
 
+/**
+ * Call extra code when two objects stop colliding with each other
+ */
 void endContact(Contact contact) {
     Fixture fixture1 = contact.getFixtureA();
     Fixture fixture2 = contact.getFixtureB();
@@ -78,10 +99,16 @@ void endContact(Contact contact) {
     }
 }
 
+/**
+ *  Unregister Power Cell with robot
+ */
 public void endHandleRobotCell(Robot robot, PowerCell cell) {
     robot.endContactCell(cell);
 }
 
+/**
+ * Unregister goal with robot
+ */
 public void endHandleRobotBoundary(Robot robot, Boundary boundary) {
     if(boundary.isGoal) {
         robot.removeGoal();

@@ -1,11 +1,13 @@
+// robot colors
 final color RED = color(255, 175, 175);
 final color RED_LIGHTER = color(200, 175, 175);
 
+// field dimensions in Box2D space
 final float FIELD_WIDTH = 277.2;
 final float FIELD_HEIGHT = 146.3;
 
-final float SCALING_FACTOR = 100.0;
-
+// Box2D categories and masks for collisions
+// Utilize bitwise masks to efficiently store data
 final short CATEGORY_BOUNDARY = 0x0001;
 final short CATEGORY_ROBOT = 0x0002;
 final short CATEGORY_CELL = 0x0004;

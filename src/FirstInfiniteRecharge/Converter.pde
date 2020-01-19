@@ -1,22 +1,30 @@
-// NOTE: All function names here are deliberately shortened in order to increase code readability
-// cw - convertWidth
-// ch - convertHeight
-// cx - convertX
-// cy - convertY
-// gx - getBox2DX (can also be used for width)
-// gy - getBox2DY (can also be used for height)
+/**
+ * NOTE: All function names here are deliberately shortened in order to increase code readability
+ * cw - convertWidth
+ * ch - convertHeight
+ * cx - convertX
+ * cy - convertY
+ * gx - getBox2DX (can also be used for width)
+ * gy - getBox2DY (can also be used for height)
+ */
 
-// converts Box2D width to pixel width
+/**
+ * Converts Box2D width to pixel width
+ */
 public float cw(float w) {
     return field.width * w / FIELD_WIDTH;
 }
 
-// converts Box2D height to pixel height
+/**
+ * Converts Box2D height to pixel height
+ */
 public float ch(float h) {
     return field.height * h / FIELD_HEIGHT;
 }
 
-// converts Box2D x to pixel x
+/**
+ * Converts Box2D x to pixel x
+ */
 public float cx(float x) {
     if(topPadding) {
         return width * x / FIELD_WIDTH;
@@ -27,7 +35,9 @@ public float cx(float x) {
     }
 }
 
-// converts Box2D y to pixel y
+/**
+ * Converts Box2D y to pixel y
+ */
 public float cy(float y) {
     if(topPadding) {
         float paddingHeight = (height - field.height) / 2;
@@ -38,17 +48,23 @@ public float cy(float y) {
     }
 }
 
-// converts ratio to Box2D x/width
+/**
+ * Converts ratio to Box2D x/width
+ */
 public float gx(float ratio) {
     return ratio * FIELD_WIDTH;
 }
 
-// converts ratio to Box2D y/height
+/**
+ * Converts ratio to Box2D y/height
+ */
 public float gy(float ratio) {
     return ratio * FIELD_HEIGHT;
 }
 
-// converts pixel x to ratio
+/**
+ * Converts pixel x to ratio
+ */
 public float getXRatio(float x) {
     if(topPadding) {
         return x / width;
@@ -59,7 +75,9 @@ public float getXRatio(float x) {
     }
 }
 
-// converts pixel y to ratio
+/**
+ * Converts pixel y to ratio
+ */
 public float getYRatio(float y) {
     if(topPadding) {
         float paddingHeight = (height - field.height) / 2;
@@ -70,18 +88,26 @@ public float getYRatio(float y) {
     }
 }
 
-// converts pixel dist to width ratio
+/**
+ * Converts pixel dist to width ratio
+ */
 public float getWRatio(float dist) {
     return dist / field.width;
 }
 
-// converts pixel dist to height ratio
+/**
+ * Converts pixel dist to height ratio
+ */
 public float getHRatio(float dist) {
     return dist / field.height;
 }
 
-int pressMouseX = 0, pressMouseY = 0;
+int pressMouseX = 0, pressMouseY = 0; // location of the last mouse press
 
+/**
+ * Print debugging info when the mouse is pressed
+ * Used to locate coordinates/measure distances and easily place objects
+ */
 void mousePressed() {
     println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(height - mouseY));
     float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
