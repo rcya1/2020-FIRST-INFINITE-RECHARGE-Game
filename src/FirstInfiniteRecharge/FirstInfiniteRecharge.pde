@@ -31,6 +31,7 @@ int blueScore;
 
 PImage field;
 PImage shieldGenerator;
+PImage trench;
 PImage powerCell;
 
 boolean topPadding;
@@ -70,9 +71,7 @@ void setup() {
     boundaries.add(new Boundary(gx(0.5), gy(0.059), gx(0.835), gy(0.0114), 0)); // bot wall
 
 
-    boundaries.add(new Boundary(gx(0.565), gy(0.860), gx(0.06), gy(0.146), 0)); // top wheel of fortune
     boundaries.add(new Boundary(gx(0.565), gy(0.786), gx(0.0430), gy(0.00950), 0)); // top wheel of fortune bot indent
-    boundaries.add(new Boundary(gx(0.435), gy(0.140), gx(0.06), gy(0.146), 0)); // bot wheel of fortune
     boundaries.add(new Boundary(gx(0.435), gy(0.216), gx(0.0430), gy(0.00950), 0)); // bot wheel of fortune top indent
 
 
@@ -88,18 +87,21 @@ void setup() {
 void setupImages() {
     field = loadImage("img/Field.png");
     shieldGenerator = loadImage("img/ShieldGenerator.png");
+    trench = loadImage("img/Trench.png");
     powerCell = loadImage("img/PowerCell.png");
 
     if(((float) width) / field.width > ((float) height) / field.height) {
         scalingFactor = ((float) field.height) / height;
         field.resize(0, height);
         shieldGenerator.resize(0, height);
+        trench.resize(0, height);
         topPadding = false;
     }
     else {
         scalingFactor = ((float) field.width) / width;
         field.resize(width, 0);
         shieldGenerator.resize(width, 0);
+        trench.resize(width, 0);
         topPadding = true;
     }
 
@@ -114,11 +116,17 @@ void resetGame() {
     player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true);
 
     powerCells.clear();
+
+    // top trench power cells
     powerCells.add(new PowerCell(gx(0.396), gy(0.863)));
     powerCells.add(new PowerCell(gx(0.448), gy(0.863)));
     powerCells.add(new PowerCell(gx(0.500), gy(0.863)));
-    powerCells.add(new PowerCell(gx(0.592), gy(0.836)));
-    powerCells.add(new PowerCell(gx(0.592), gy(0.886)));
+
+    // top wheel of fortune power cells
+    powerCells.add(new PowerCell(gx(0.600), gy(0.836)));
+    powerCells.add(new PowerCell(gx(0.600), gy(0.886)));
+
+    // shield generator power cells
     powerCells.add(new PowerCell(gx(0.384), gy(0.609)));
     powerCells.add(new PowerCell(gx(0.407), gy(0.626)));
     powerCells.add(new PowerCell(gx(0.375), gy(0.541)));
@@ -129,8 +137,12 @@ void resetGame() {
     powerCells.add(new PowerCell(gx(0.625), gy(0.452)));
     powerCells.add(new PowerCell(gx(0.615), gy(0.495)));
     powerCells.add(new PowerCell(gx(0.606), gy(0.535)));
-    powerCells.add(new PowerCell(gx(0.407), gy(0.156)));
-    powerCells.add(new PowerCell(gx(0.407), gy(0.107)));
+
+    // bottom wheel of fortune power cells
+    powerCells.add(new PowerCell(gx(0.400), gy(0.156)));
+    powerCells.add(new PowerCell(gx(0.400), gy(0.107)));
+
+    // bottom trench power cells
     powerCells.add(new PowerCell(gx(0.499), gy(0.132)));
     powerCells.add(new PowerCell(gx(0.552), gy(0.134)));
     powerCells.add(new PowerCell(gx(0.603), gy(0.134)));
@@ -187,6 +199,7 @@ void showSprites() {
         powerCell.show();
     }
     image(shieldGenerator, width / 2, height / 2);
+    image(trench, width / 2, height / 2);
     // for(Boundary boundary : boundaries) {
     //     boundary.show();
     // }
