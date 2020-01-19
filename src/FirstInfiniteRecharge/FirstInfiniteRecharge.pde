@@ -266,6 +266,7 @@ void showSprites() {
     //     boundary.show();
     // }
 
+    // draw Power Cells in the loading bays
     for(int i = 0; i < min(7, redStationAvailable); i++) {
         imageMode(CENTER);
         image(powerCell, cx(gx(redLoadingBallX)), height - cy(gy(redLoadingBallY + redLoadingBallYSpacing * i)));
@@ -282,7 +283,12 @@ void showSprites() {
  */
 void showOverlay() {
     fill(200);
+    noStroke();
     rect(width / 2, height / 30, width, height / 15);
+    fill(RED);
+    rect(width / 5, height / 30, width * 2 / 5, height / 15);
+    fill(BLUE);
+    rect(width * 4 / 5, height / 30, width * 2 / 5, height / 15);
 
     textAlign(CENTER);
     textSize(56 / scalingFactor);
@@ -293,6 +299,7 @@ void showOverlay() {
     text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
     text("Blue Available: " + blueStationAvailable, width * 7 / 10, height / 20);
 
+    // calculate match timer
     int min, sec;
     if(startTime == -1) {
         min = 2;
@@ -302,7 +309,6 @@ void showOverlay() {
         min = getCurrentMatchTimeLeft() / 60;
         sec = getCurrentMatchTimeLeft() % 60;
     }
-
     text(min + " : " + sec, width / 2, height / 20);
 
     // draw fading countdown timer

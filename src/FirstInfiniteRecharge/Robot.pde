@@ -196,6 +196,8 @@ class Robot {
             stroke(0);
             fill(robotColor);
             rect(0, 0, cw(w), ch(h));
+
+            fill(intakeColor);
             rect(cw(w / 2 - w / 8), 0, cw(w / 4), ch(w / 2));
 
             for(int i = 0; i < numBalls; i++) {

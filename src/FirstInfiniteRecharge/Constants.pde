@@ -1,6 +1,8 @@
 // robot colors
 final color RED = color(255, 175, 175);
-final color RED_LIGHTER = color(200, 175, 175);
+final color RED_LIGHTER = color(255, 200, 200);
+final color BLUE = color(175, 175, 255);
+final color BLUE_LIGHTER = color(200, 200, 255);
 
 // field dimensions in Box2D space
 final float FIELD_WIDTH = 277.2;
