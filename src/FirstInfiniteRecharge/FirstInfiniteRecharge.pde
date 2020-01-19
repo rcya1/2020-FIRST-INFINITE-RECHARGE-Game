@@ -47,6 +47,10 @@ PImage powerCell;
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
 
+// TODO add the custom shooter power
+// TODO make the loading bay graphic update with the amount of balls you have
+// TODO improve the font of the top and add colored rectangles to make it easier to see
+
 /**
  * Set up all of the variables in the game
  */
