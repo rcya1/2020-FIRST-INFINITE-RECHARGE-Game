@@ -43,12 +43,18 @@ PImage field;
 PImage shieldGenerator;
 PImage trench;
 PImage powerCell;
+float blueLoadingBallX = 0.040;
+float blueLoadingBallY = 0.410;
+float blueLoadingBallYSpacing = 0.02525;
+
+float redLoadingBallX = 0.960;
+float redLoadingBallY = 0.590;
+float redLoadingBallYSpacing = 0.02525;
 
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
 
 // TODO add the custom shooter power
-// TODO make the loading bay graphic update with the amount of balls you have
 // TODO improve the font of the top and add colored rectangles to make it easier to see
 
 /**
@@ -259,6 +265,16 @@ void showSprites() {
     // for(Boundary boundary : boundaries) {
     //     boundary.show();
     // }
+
+    for(int i = 0; i < min(7, redStationAvailable); i++) {
+        imageMode(CENTER);
+        image(powerCell, cx(gx(redLoadingBallX)), height - cy(gy(redLoadingBallY + redLoadingBallYSpacing * i)));
+    }
+
+    for(int i = 0; i < min(7, blueStationAvailable); i++) {
+        imageMode(CENTER);
+        image(powerCell, cx(gx(blueLoadingBallX)), height - cy(gy(blueLoadingBallY - blueLoadingBallYSpacing * i)));
+    }
 }
 
 /**
