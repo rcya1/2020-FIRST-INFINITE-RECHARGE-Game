@@ -116,8 +116,8 @@ class Robot {
                 numBalls--;
                 Vec2 loc = body.getTransform().p;
                 powerCells.add(new PowerCell(loc.x, loc.y,
-                    cos(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().x, 
-                    sin(body.getAngle() + PI) * SHOOTER_SPEED + body.getLinearVelocity().y));
+                    cos(body.getAngle()) * SHOOTER_SPEED + body.getLinearVelocity().x, 
+                    sin(body.getAngle()) * SHOOTER_SPEED + body.getLinearVelocity().y));
             }
         }
         // if the robot is currently dumping balls and is touching a goal

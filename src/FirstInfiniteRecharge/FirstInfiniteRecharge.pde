@@ -34,6 +34,10 @@ ArrayList<PowerCell> scheduleDelete; // list of all Power Cells scheduled to be 
 int redScore;
 int blueScore;
 
+int startTime; // time the actual game started in millis
+int fadeTimer; // time left for the current countdown number to fade
+int countDown; // number of seconds left in the countdown
+
 // all images used by the game
 PImage field;
 PImage shieldGenerator;
@@ -42,8 +46,6 @@ PImage powerCell;
 
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
-
-// TODO Add 15 station limit
 
 /**
  * Set up all of the variables in the game
@@ -169,6 +171,10 @@ void resetGame() {
     blueScore = 0;
     redStationAvailable = 5;
     blueStationAvailable = 5;
+
+    fadeTimer = FPS;
+    countDown = 5;
+    startTime = -1; // -1 so that we know the game hasn't started yet
 }
 
 /**
@@ -185,31 +191,44 @@ void draw() {
  * Update the physics and inputs of everything
  */
 void update() {
-    player1.handleInput(keysPressed, keyCodes);
-
-    box2D.step();
-
-    player1.update(powerCells);
-    for(PowerCell powerCell : powerCells) {
-        powerCell.update();
+    if(countDown > 0) {
+        if(fadeTimer == 0) {
+            countDown--;
+            fadeTimer = 60;
+        }
     }
+    else if(startTime == -1 || getCurrentMatchTimeLeft() > 0) {
+        if(startTime == -1) {
+            startTime = millis();
+        }
 
-    for(PowerCell powerCell : scheduleDelete) {
-        powerCell.removeFromWorld();
-    }
+        player1.handleInput(keysPressed, keyCodes);
 
-    // eject balls from stations if commanded to or forced to by the number in reserve
-    if((keysPressed.contains('q') || redStationAvailable > 14) && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
-        powerCells.add(new PowerCell(gx(0.948), gy(0.659), gx(-0.1), gy(0)));
-        redStationLastTime = millis();
-        redStationAvailable--;
+        box2D.step();
+
+        player1.update(powerCells);
+        for(PowerCell powerCell : powerCells) {
+            powerCell.update();
+        }
+
+        for(PowerCell powerCell : scheduleDelete) {
+            powerCell.removeFromWorld();
+        }
+
+        // eject balls from stations if commanded to or forced to by the number in reserve
+        if((keysPressed.contains('q') || redStationAvailable > 14) && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
+            powerCells.add(new PowerCell(gx(0.948), gy(0.659), gx(-0.1), gy(0)));
+            redStationLastTime = millis();
+            redStationAvailable--;
+        }
+        if((keysPressed.contains('o') || blueStationAvailable > 14) && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
+            powerCells.add(new PowerCell(gx(0.057), gy(0.328), gx(0.1), gy(0)));
+            blueStationLastTime = millis();
+            blueStationAvailable--;
+        }
+        scheduleDelete.clear();
     }
-    if((keysPressed.contains('o') || blueStationAvailable > 14) && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
-        powerCells.add(new PowerCell(gx(0.057), gy(0.328), gx(0.1), gy(0)));
-        blueStationLastTime = millis();
-        blueStationAvailable--;
-    }
-    scheduleDelete.clear();
+    fadeTimer--;
 
     // println(frameRate);
 }
@@ -248,11 +267,44 @@ void showOverlay() {
     textAlign(CENTER);
     textSize(56 / scalingFactor);
     fill(0);
-    text("Red Score: " + redScore, width / 5, height / 20);
-    text("Red Available: " + redStationAvailable, width * 2 / 5, height / 20);
+    text("Red Score: " + redScore, width / 10, height / 20);
+    text("Red Available: " + redStationAvailable, width * 3 / 10, height / 20);
 
-    text("Blue Score: " + blueScore, width * 3 / 5, height / 20);
-    text("Blue Available: " + blueStationAvailable, width * 4 / 5, height / 20);
+    text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
+    text("Blue Available: " + blueStationAvailable, width * 7 / 10, height / 20);
+
+    int min, sec;
+    if(startTime == -1) {
+        min = 2;
+        sec = 30;
+    }
+    else {
+        min = getCurrentMatchTimeLeft() / 60;
+        sec = getCurrentMatchTimeLeft() % 60;
+    }
+
+    text(min + " : " + sec, width / 2, height / 20);
+
+    // draw fading countdown timer
+    if(fadeTimer > 0) {
+        fill(0, 0, 0, 255 * fadeTimer / FPS);
+        textSize(150 / scalingFactor);
+        text(countDown == 0 ? "Start!" : Integer.toString(countDown), width / 2, height / 2);
+    }
+}
+
+/**
+ * Returns the floored current match time in seconds
+ */
+int getCurrentMatchTime() {
+    return (millis() - startTime) / 1000;
+}
+
+/**
+ * Returns the ceiling current match time left in seconds
+ */
+int getCurrentMatchTimeLeft() {
+    return 150 - getCurrentMatchTime();
 }
 
 /**
