@@ -43,22 +43,30 @@ public void handleRobotCell(Robot robot, PowerCell cell) {
  * Checks if the boundary is a goal and then does a check on the speed to see if it will go in
  */
 public void handleCellBoundary(PowerCell cell, Boundary boundary) {
-    if(boundary.isGoal) {
-        float speed = cell.getLinearVelocitySquared();
-        // println(speed);
+    if(getCurrentMatchTimeLeft() > 0) {
+        if(boundary.isGoal) {
+            float speed = cell.getLinearVelocitySquared();
+            // println(speed);
 
-        // randomly chosen numbers btw
-        if(speed / 2 > 1257 && speed / 2 < 2590) {
-            if(boundary.isRed) {
-                redScore += 2;
-                blueStationAvailable++;
+            // randomly chosen numbers btw
+            if(speed / 2 < 1257) {
+                texts.add(new Text("Too Slow!", boundary.getX(), boundary.getY(), color(0), 1, 255, boundary.isRed));
+            }
+            else if(speed / 2 > 2590) {
+                texts.add(new Text("Too Fast!", boundary.getX(), boundary.getY(), color(0), 1, 255, boundary.isRed));
             }
             else {
-                blueScore += 2;
-                redStationAvailable++;
+                if(boundary.isRed) {
+                    redScore += 2;
+                    blueStationAvailable++;
+                }
+                else {
+                    blueScore += 2;
+                    redStationAvailable++;
+                }
+                powerCells.remove(cell);
+                scheduleDelete.add(cell);
             }
-            powerCells.remove(cell);
-            scheduleDelete.add(cell);
         }
     }
 }

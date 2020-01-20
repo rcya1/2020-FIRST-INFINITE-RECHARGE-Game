@@ -91,4 +91,14 @@ class Boundary
         
         popMatrix();
     }
+
+    float getX() {
+        Vec2 loc = body.getTransform().p;
+        return cx(loc.x);
+    }
+
+    float getY() {
+        Vec2 loc = body.getTransform().p;
+        return height - cy(loc.y);
+    }
 }

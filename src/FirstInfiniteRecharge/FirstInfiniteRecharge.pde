@@ -15,8 +15,7 @@ final int FPS = 60; // frames per second
 HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
 
-// players
-Robot player1;
+ArrayList<Text> texts; // list of all current text messages
 
 // how many balls are available in each station
 int redStationAvailable;
@@ -26,6 +25,8 @@ int blueStationAvailable;
 int redStationLastTime;
 int blueStationLastTime;
 
+
+ArrayList<Robot> players; // list of current players
 ArrayList<Boundary> boundaries; // list of all boundaries
 ArrayList<PowerCell> powerCells; // list of all Power Cells
 ArrayList<PowerCell> scheduleDelete; // list of all Power Cells scheduled to be deleted
@@ -75,6 +76,9 @@ void setup() {
     keysPressed = new HashSet<Character>();
     keyCodes = new HashSet<Integer>();
 
+    texts = new ArrayList<Text>();
+
+    players = new ArrayList<Robot>();
     powerCells = new ArrayList<PowerCell>();
     scheduleDelete = new ArrayList<PowerCell>();
 
@@ -139,11 +143,14 @@ void setupImages() {
  * Reset all robots, game pieces, and scores
  */
 void resetGame() {
-    if(player1 != null) {
-        player1.removeFromWorld();
-    }
+    texts.clear();
 
-    player1 = new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true);
+    for(Robot player : players) {
+        if(player != null) player.removeFromWorld();
+    }
+    players.clear();
+
+    players.add(new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true));
 
     powerCells.clear();
 
@@ -212,11 +219,15 @@ void update() {
             startTime = millis();
         }
 
-        player1.handleInput(keysPressed, keyCodes);
+        for(Robot player : players) {
+            player.handleInput(keysPressed, keyCodes);
+        }
 
         box2D.step();
 
-        player1.update(powerCells);
+        for(Robot player : players) {
+            player.update(powerCells);
+        }
         for(PowerCell powerCell : powerCells) {
             powerCell.update();
         }
@@ -240,6 +251,15 @@ void update() {
     }
     fadeTimer--;
 
+    Iterator<Text> textIterator = texts.iterator();
+    while(textIterator.hasNext()) {
+        Text text = textIterator.next();
+        text.update();
+        if(text.dead()) {
+            textIterator.remove();
+        }
+    }
+
     // println(frameRate);
 }
 
@@ -256,7 +276,9 @@ void showBackground() {
  * Display the sprites such as the players, Power Cells, and overlaying field elements
  */
 void showSprites() {
-    player1.show();
+    for(Robot player : players) {
+        player.show();
+    }
     for(PowerCell powerCell : powerCells) {
         powerCell.show();
     }
@@ -282,6 +304,16 @@ void showSprites() {
  * Draw the top overlay
  */
 void showOverlay() {
+    for(Robot player : players) {
+        if(player.state == 2) {
+            player.showShooterBar();
+        }
+    }
+    
+    for(Text text : texts) {
+        text.show();
+    }
+
     fill(200);
     noStroke();
     rect(width / 2, height / 30, width, height / 15);
@@ -291,17 +323,15 @@ void showOverlay() {
     rect(width * 4 / 5, height / 30, width * 2 / 5, height / 15);
 
     textAlign(CENTER);
-    textSize(56 / scalingFactor);
     fill(0);
-    text("Red Score: " + redScore, width / 10, height / 20);
-    text("Red Available: " + redStationAvailable, width * 3 / 10, height / 20);
 
-    text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
+    textSize(56 / scalingFactor);
     text("Blue Available: " + blueStationAvailable, width * 7 / 10, height / 20);
-
-    if(player1.state == 2) {
-        player1.showShooterBar();
-    }
+    text("Red Available: " + redStationAvailable, width * 3 / 10, height / 20);
+    
+    textSize(76 / scalingFactor);
+    text("Red Score: " + redScore, width / 10, height / 20);
+    text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
 
     // calculate and draw match timer
     int min, sec;
@@ -329,8 +359,6 @@ void showOverlay() {
         textSize(150 / scalingFactor);
         text(countDown == 0 ? "Start!" : Integer.toString(countDown), width / 2, height / 2);
     }
-
-    // TODO draw the shooter speed bar
 }
 
 /**
