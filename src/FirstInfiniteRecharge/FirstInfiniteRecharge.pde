@@ -55,8 +55,7 @@ float redLoadingBallYSpacing = 0.02525;
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
 
-// TODO add shooter bar visual
-// TODO add feedback for why goal didn't go in (too fast or too slow)
+// TODO add second player
 
 /**
  * Set up all of the variables in the game
