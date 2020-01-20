@@ -37,7 +37,7 @@ class Text {
      * Draw the text and slowly fade it depending on its life
      */
     void show() {
-        fill(red(textColor), green(textColor), blue(textColor), life * 100 / maxLife);
+        fill(red(textColor), green(textColor), blue(textColor), life * 255 / maxLife);
         textAlign(left ? LEFT : RIGHT);
         textSize(56 / scalingFactor);
         text(text, x, y);

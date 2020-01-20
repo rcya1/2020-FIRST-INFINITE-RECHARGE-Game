@@ -268,7 +268,9 @@ class Robot {
      * look at the currently pressed keys and apply forces/update state as necessary
      */
     void handleInput(HashSet<Character> keys, HashSet<Integer> keyCodes) {
+        // player 1 controls
         if(wasd) {
+            // movement
             if(keys.contains('d')) {
                 turnClock();
                 if(state == 3) state = 0;
@@ -298,25 +300,50 @@ class Robot {
                 state = 3;
             }
             // begin intaking when the f key is pressed and not shooting
-            if(keys.contains('f') && state == 0) {
+            if(keyCodes.contains(SHIFT) && state == 0) {
                 state = 1;
             }
-            if(!keys.contains('f') && state == 1) {
+            if(!keyCodes.contains(SHIFT) && state == 1) {
                 state = 0;
             }
         }
+        // player 2 controls
         else {
-            if(keys.contains('\'') || keys.contains('\"')) {
-                turnClock();
-            }
+            // movement
             if(keys.contains('l')) {
+                turnClock();
+                if(state == 3) state = 0;
+            }
+            if(keys.contains('j')) {
                 turnCounter();
+                if(state == 3) state = 0;
             }
-            if(keys.contains('p')) {
+            if(keys.contains('i')) {
                 moveForward();
+                if(state == 3) state = 0;
             }
-            if(keys.contains(';') || keys.contains(':')) {
+            if(keys.contains('k')) {
                 moveBackward();
+                if(state == 3) state = 0;
+            }
+
+            // begin charging the shooter
+            if((keys.contains('.') || keys.contains('>') || keys.contains('n')) && state == 0 && numBalls != 0) {
+                state = 2;
+                // reset the shooter bar
+                shooterSpeed = 0;
+                shooterSpeedBarVelocity = 1;
+            }
+            // begin shooting when the spacebar is released
+            if(!(keys.contains('.') || keys.contains('>') || keys.contains('n')) && state == 2) {
+                state = 3;
+            }
+            // begin intaking when the f key is pressed and not shooting
+            if((keys.contains(';') || keys.contains(':') || keys.contains('h')) && state == 0) {
+                state = 1;
+            }
+            if(!(keys.contains(';') || keys.contains(':') || keys.contains('h')) && state == 1) {
+                state = 0;
             }
         }
     }

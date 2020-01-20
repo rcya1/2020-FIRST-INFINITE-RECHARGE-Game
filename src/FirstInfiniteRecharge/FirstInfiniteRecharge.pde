@@ -44,6 +44,8 @@ PImage field;
 PImage shieldGenerator;
 PImage trench;
 PImage powerCell;
+
+// parameters for adding graphics to the loading bays
 float blueLoadingBallX = 0.040;
 float blueLoadingBallY = 0.410;
 float blueLoadingBallYSpacing = 0.02525;
@@ -150,6 +152,7 @@ void resetGame() {
     players.clear();
 
     players.add(new Robot(gx(0.1), gy(0.5), gx(0.06), gy(0.075), 0, RED, RED_LIGHTER, true));
+    players.add(new Robot(gx(0.9), gy(0.5), gx(0.06), gy(0.075), 180, BLUE, BLUE_LIGHTER, false));
 
     powerCells.clear();
 
@@ -188,7 +191,7 @@ void resetGame() {
     redStationAvailable = 5;
     blueStationAvailable = 5;
 
-    fadeTimer = FPS;
+    fadeTimer = FPS; // time it so that each number lasts 1 second (assuming no lag)
     countDown = 5;
     startTime = -1; // -1 so that we know the game hasn't started yet
 }
@@ -236,12 +239,16 @@ void update() {
         }
 
         // eject balls from stations if commanded to or forced to by the number in reserve
-        if((keysPressed.contains('q') || redStationAvailable > 14) && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
+        if((keysPressed.contains('e') || redStationAvailable > 14) 
+            && millis() - redStationLastTime > 500 && redStationAvailable > 0) {
+                
             powerCells.add(new PowerCell(gx(0.948), gy(0.659), gx(-0.1), gy(0)));
             redStationLastTime = millis();
             redStationAvailable--;
         }
-        if((keysPressed.contains('o') || blueStationAvailable > 14) && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
+        if((keysPressed.contains('o') || keysPressed.contains('u') || blueStationAvailable > 14) 
+            && millis() - blueStationLastTime > 500 && blueStationAvailable > 0) {
+
             powerCells.add(new PowerCell(gx(0.057), gy(0.328), gx(0.1), gy(0)));
             blueStationLastTime = millis();
             blueStationAvailable--;
@@ -323,12 +330,12 @@ void showOverlay() {
     fill(0);
 
     textSize(56 / scalingFactor);
-    text("Blue Available: " + blueStationAvailable, width * 7 / 10, height / 20);
-    text("Red Available: " + redStationAvailable, width * 3 / 10, height / 20);
+    text("Blue Available: " + blueStationAvailable, width * 9 / 10, height / 20);
+    text("Red Available: " + redStationAvailable, width / 10, height / 20);
     
     textSize(76 / scalingFactor);
-    text("Red Score: " + redScore, width / 10, height / 20);
-    text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
+    text("Red Score: " + redScore, width * 3 / 10, height / 20);
+    text("Blue Score: " + blueScore, width * 7 / 10, height / 20);
 
     // calculate and draw match timer
     int min, sec;
