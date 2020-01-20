@@ -48,7 +48,7 @@ public void handleCellBoundary(PowerCell cell, Boundary boundary) {
         // println(speed);
 
         // randomly chosen numbers btw
-        if(speed > 1257 && speed < 2590) {
+        if(speed / 2 > 1257 && speed / 2 < 2590) {
             if(boundary.isRed) {
                 redScore += 2;
                 blueStationAvailable++;

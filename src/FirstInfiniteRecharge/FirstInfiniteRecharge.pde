@@ -183,7 +183,7 @@ void resetGame() {
     blueStationAvailable = 5;
 
     fadeTimer = FPS;
-    countDown = 5;
+    countDown = 0;
     startTime = -1; // -1 so that we know the game hasn't started yet
 }
 
@@ -299,7 +299,11 @@ void showOverlay() {
     text("Blue Score: " + blueScore, width * 9 / 10, height / 20);
     text("Blue Available: " + blueStationAvailable, width * 7 / 10, height / 20);
 
-    // calculate match timer
+    if(player1.state == 2) {
+        player1.showShooterBar();
+    }
+
+    // calculate and draw match timer
     int min, sec;
     if(startTime == -1) {
         min = 2;
@@ -308,10 +312,15 @@ void showOverlay() {
     else {
         min = getCurrentMatchTimeLeft() / 60;
         sec = getCurrentMatchTimeLeft() % 60;
+
+        if(min < 0) min = 0;
+        if(sec < 0) sec = 0;
     }
     String secString;
     if(sec < 10) secString = "0" + sec;
     else secString = Integer.toString(sec);
+    textSize(76 / scalingFactor);
+    fill(0);
     text(min + " : " + secString, width / 2, height / 20);
 
     // draw fading countdown timer

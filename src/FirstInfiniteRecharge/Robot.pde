@@ -56,7 +56,7 @@ class Robot {
         this.wasd = wasd;
 
         state = 0;
-        shooterSpeed = MAX_SHOOTER_SPEED / 2;
+        shooterSpeed = 0;
         shooterSpeedBarVelocity = 1;
         contactCells = new ArrayList<PowerCell>();
         numBalls = 3;
@@ -120,17 +120,20 @@ class Robot {
     void update(ArrayList<PowerCell> powerCells) {
         // if the robot is currently charging the shooter
         if(state == 2) {
-            shooterSpeed += shooterSpeedBarVelocity;
-            if(shooterSpeed >= MAX_SHOOTER_SPEED) {
-                shooterSpeed = MAX_SHOOTER_SPEED;
-                shooterSpeedBarVelocity *= -1;
+            if(numBalls != 0) {
+                shooterSpeed += shooterSpeedBarVelocity;
+                if(shooterSpeed >= MAX_SHOOTER_SPEED) {
+                    shooterSpeed = MAX_SHOOTER_SPEED;
+                    shooterSpeedBarVelocity *= -1;
+                }
+                else if(shooterSpeed <= 0) {
+                    shooterSpeed = 0;
+                    shooterSpeedBarVelocity *= -1;
+                }
             }
-            else if(shooterSpeed <= 0) {
-                shooterSpeed = 0;
-                shooterSpeedBarVelocity *= -1;
+            else {
+                state = 0;
             }
-
-            println(shooterSpeed);
         }
         // if the robot is currently shooting and has balls to shoot
         if(state == 3 && goalStatus == 0 && numBalls > 0) {
@@ -139,10 +142,12 @@ class Robot {
                 lastShotTime = millis();
                 numBalls--;
                 Vec2 loc = body.getTransform().p;
-                powerCells.add(new PowerCell(loc.x, loc.y,
+                powerCells.add(new PowerCell(loc.x + cos(body.getAngle()) * w / 2, loc.y + sin(body.getAngle()) * w / 2,
                     cos(body.getAngle()) * shooterSpeed + body.getLinearVelocity().x, 
                     sin(body.getAngle()) * shooterSpeed + body.getLinearVelocity().y));
-                println(shooterSpeed);
+                if(numBalls == 0) {
+                    state = 0;
+                }
             }
         }
         // if the robot is currently dumping balls and is touching a goal
@@ -234,6 +239,28 @@ class Robot {
         
         popMatrix();
     }
+
+    void showShooterBar() {
+        pushMatrix();
+        
+            Vec2 loc = body.getTransform().p;
+            // println(loc);
+            translate(cx(loc.x), height - cy(loc.y));
+
+            noStroke();
+            fill(intakeColor);
+            
+            rectMode(CORNER);
+            float ratio = shooterSpeed / MAX_SHOOTER_SPEED;
+            rect(cw(w * 9 / 16), cw(h * 3 / 4) - cw(h * 3 / 2) * ratio, cw(w / 8), cw(h * 3 / 2) * ratio);
+
+            rectMode(CENTER);
+            stroke(0);
+            noFill();
+            rect(cw(w * 5 / 8), 0, cw(w / 8), cw(h * 3 / 2));
+        
+        popMatrix();
+    }
     
     /**
      * look at the currently pressed keys and apply forces/update state as necessary
@@ -242,26 +269,26 @@ class Robot {
         if(wasd) {
             if(keys.contains('d')) {
                 turnClock();
-                if(state == 2 || state == 3) state = 0;
+                if(state == 3) state = 0;
             }
             if(keys.contains('a')) {
                 turnCounter();
-                if(state == 2 || state == 3) state = 0;
+                if(state == 3) state = 0;
             }
             if(keys.contains('w')) {
                 moveForward();
-                if(state == 2 || state == 3) state = 0;
+                if(state == 3) state = 0;
             }
             if(keys.contains('s')) {
                 moveBackward();
-                if(state == 2 || state == 3) state = 0;
+                if(state == 3) state = 0;
             }
 
             // begin charging the shooter
-            if(keys.contains(' ') && state == 0) {
+            if(keys.contains(' ') && state == 0 && numBalls != 0) {
                 state = 2;
                 // reset the shooter bar
-                shooterSpeed = MAX_SHOOTER_SPEED / 2.0;
+                shooterSpeed = 0;
                 shooterSpeedBarVelocity = 1;
             }
             // begin shooting when the spacebar is released
