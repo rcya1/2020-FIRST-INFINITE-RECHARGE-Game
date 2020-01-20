@@ -241,25 +241,27 @@ class Robot {
     }
 
     void showShooterBar() {
-        pushMatrix();
-        
-            Vec2 loc = body.getTransform().p;
-            // println(loc);
-            translate(cx(loc.x), height - cy(loc.y));
-
-            noStroke();
-            fill(intakeColor);
+        if(state == 2 && goalStatus == 0) {
+            pushMatrix();
             
-            rectMode(CORNER);
-            float ratio = shooterSpeed / MAX_SHOOTER_SPEED;
-            rect(cw(w * 9 / 16), cw(h * 3 / 4) - cw(h * 3 / 2) * ratio, cw(w / 8), cw(h * 3 / 2) * ratio);
+                Vec2 loc = body.getTransform().p;
+                // println(loc);
+                translate(cx(loc.x), height - cy(loc.y));
 
-            rectMode(CENTER);
-            stroke(0);
-            noFill();
-            rect(cw(w * 5 / 8), 0, cw(w / 8), cw(h * 3 / 2));
-        
-        popMatrix();
+                noStroke();
+                fill(intakeColor);
+                
+                rectMode(CORNER);
+                float ratio = shooterSpeed / MAX_SHOOTER_SPEED;
+                rect(cw(w * 9 / 16), cw(h * 3 / 4) - cw(h * 3 / 2) * ratio, cw(w / 8), cw(h * 3 / 2) * ratio);
+
+                rectMode(CENTER);
+                stroke(0);
+                noFill();
+                rect(cw(w * 5 / 8), 0, cw(w / 8), cw(h * 3 / 2));
+            
+            popMatrix();
+        }
     }
     
     /**

@@ -305,9 +305,7 @@ void showSprites() {
  */
 void showOverlay() {
     for(Robot player : players) {
-        if(player.state == 2) {
-            player.showShooterBar();
-        }
+        player.showShooterBar();
     }
     
     for(Text text : texts) {
