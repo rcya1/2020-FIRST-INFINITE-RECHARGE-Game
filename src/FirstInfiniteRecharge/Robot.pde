@@ -10,8 +10,16 @@ class Robot {
     Body body;
     Fixture fixture;
 
-    boolean shooting; // whether or not the robot is currently shooting balls
-    boolean intaking; // whether or not the robot is intaking balls
+    /**
+     * State Machine:
+     * 0 - normal
+     * 1 - intaking
+     * 2 - charging shooter
+     * 3 - shooting 
+     */
+    int state = 0;
+    float shooterSpeed;
+    float shooterSpeedBarVelocity;
 
     ArrayList<PowerCell> contactCells; // list of all balls the Robot is touching
     int numBalls; // number of balls stored by the Robot
@@ -30,7 +38,7 @@ class Robot {
 
     // shooter constants
     static final int TIME_BETWEEN_SHOTS = 500; // millis
-    static final int SHOOTER_SPEED = 750;
+    static final int MAX_SHOOTER_SPEED = 150;
     
 
     /**
@@ -47,7 +55,9 @@ class Robot {
         
         this.wasd = wasd;
 
-        intaking = false;
+        state = 0;
+        shooterSpeed = MAX_SHOOTER_SPEED / 2;
+        shooterSpeedBarVelocity = 1;
         contactCells = new ArrayList<PowerCell>();
         numBalls = 3;
 
@@ -108,20 +118,35 @@ class Robot {
      * Update shooting and intaking
      */
     void update(ArrayList<PowerCell> powerCells) {
+        // if the robot is currently charging the shooter
+        if(state == 2) {
+            shooterSpeed += shooterSpeedBarVelocity;
+            if(shooterSpeed >= MAX_SHOOTER_SPEED) {
+                shooterSpeed = MAX_SHOOTER_SPEED;
+                shooterSpeedBarVelocity *= -1;
+            }
+            else if(shooterSpeed <= 0) {
+                shooterSpeed = 0;
+                shooterSpeedBarVelocity *= -1;
+            }
+
+            println(shooterSpeed);
+        }
         // if the robot is currently shooting and has balls to shoot
-        if(shooting && goalStatus == 0 && numBalls > 0) {
+        if(state == 3 && goalStatus == 0 && numBalls > 0) {
             // ensure they can't shoot balls too fast
             if(millis() - lastShotTime >= TIME_BETWEEN_SHOTS) {
                 lastShotTime = millis();
                 numBalls--;
                 Vec2 loc = body.getTransform().p;
                 powerCells.add(new PowerCell(loc.x, loc.y,
-                    cos(body.getAngle()) * SHOOTER_SPEED + body.getLinearVelocity().x, 
-                    sin(body.getAngle()) * SHOOTER_SPEED + body.getLinearVelocity().y));
+                    cos(body.getAngle()) * shooterSpeed + body.getLinearVelocity().x, 
+                    sin(body.getAngle()) * shooterSpeed + body.getLinearVelocity().y));
+                println(shooterSpeed);
             }
         }
         // if the robot is currently dumping balls and is touching a goal
-        else if(shooting && goalStatus != 0) {
+        else if(state == 3 && goalStatus != 0) {
             if(goalStatus == 1) {
                 redScore += numBalls;
                 blueStationAvailable += numBalls;
@@ -134,7 +159,7 @@ class Robot {
             }
         }
         // if the robot is currently intaking balls
-        else if(intaking) {
+        else if(state == 1) {
             // go through every power cell and see if it is touching the intake
             Iterator<PowerCell> iterator = powerCells.iterator();
             while(iterator.hasNext()) {
@@ -151,6 +176,9 @@ class Robot {
                     numBalls++;
                 }
             }
+        }
+        // if the robot is currently in the neutral state
+        else if(state == 0) {
         }
     }
 
@@ -214,19 +242,39 @@ class Robot {
         if(wasd) {
             if(keys.contains('d')) {
                 turnClock();
+                if(state == 2 || state == 3) state = 0;
             }
             if(keys.contains('a')) {
                 turnCounter();
+                if(state == 2 || state == 3) state = 0;
             }
             if(keys.contains('w')) {
                 moveForward();
+                if(state == 2 || state == 3) state = 0;
             }
             if(keys.contains('s')) {
                 moveBackward();
+                if(state == 2 || state == 3) state = 0;
             }
 
-            intaking = keys.contains('f');
-            shooting = keys.contains(' ');
+            // begin charging the shooter
+            if(keys.contains(' ') && state == 0) {
+                state = 2;
+                // reset the shooter bar
+                shooterSpeed = MAX_SHOOTER_SPEED / 2.0;
+                shooterSpeedBarVelocity = 1;
+            }
+            // begin shooting when the spacebar is released
+            if(!keys.contains(' ') && state == 2) {
+                state = 3;
+            }
+            // begin intaking when the f key is pressed and not shooting
+            if(keys.contains('f') && state == 0) {
+                state = 1;
+            }
+            if(!keys.contains('f') && state == 1) {
+                state = 0;
+            }
         }
         else {
             if(keys.contains('\'') || keys.contains('\"')) {

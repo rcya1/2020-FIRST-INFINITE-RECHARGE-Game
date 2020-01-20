@@ -54,8 +54,8 @@ float redLoadingBallYSpacing = 0.02525;
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
 
-// TODO add the custom shooter power
-// TODO improve the font of the top and add colored rectangles to make it easier to see
+// TODO add shooter bar visual
+// TODO add feedback for why goal didn't go in (too fast or too slow)
 
 /**
  * Set up all of the variables in the game
@@ -309,7 +309,10 @@ void showOverlay() {
         min = getCurrentMatchTimeLeft() / 60;
         sec = getCurrentMatchTimeLeft() % 60;
     }
-    text(min + " : " + sec, width / 2, height / 20);
+    String secString;
+    if(sec < 10) secString = "0" + sec;
+    else secString = Integer.toString(sec);
+    text(min + " : " + secString, width / 2, height / 20);
 
     // draw fading countdown timer
     if(fadeTimer > 0) {
@@ -317,6 +320,8 @@ void showOverlay() {
         textSize(150 / scalingFactor);
         text(countDown == 0 ? "Start!" : Integer.toString(countDown), width / 2, height / 2);
     }
+
+    // TODO draw the shooter speed bar
 }
 
 /**

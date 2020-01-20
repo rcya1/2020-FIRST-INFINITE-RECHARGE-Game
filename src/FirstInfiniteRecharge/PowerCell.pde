@@ -8,7 +8,7 @@ class PowerCell {
     // Box2D objects
     BodyDef bodyDef;
     Body body;
-    FixtureDef fixtureDef;  
+    FixtureDef fixtureDef;
 
     boolean destroyed; // represents whether the power cell has been destroyed and is no longer in the world
     boolean airborne; // represents whether the power cell is in the air and can be scored
@@ -16,7 +16,7 @@ class PowerCell {
     // physics constants
     static final float FRICTION = 1.0;
     static final float RESTITUTION = 0.4;
-    static final float DENSITY = 2.0;
+    static final float DENSITY = 0.5;
     
     /**
      * Create a Power Cell with the given x and y coordinates in Box2D space
@@ -51,7 +51,7 @@ class PowerCell {
 
         if(airborne) {
             bodyDef.bullet = true;
-            bodyDef.linearDamping = 1.5;
+            bodyDef.linearDamping = 0.75;
         }
         else {
             bodyDef.linearDamping = 3.0;
