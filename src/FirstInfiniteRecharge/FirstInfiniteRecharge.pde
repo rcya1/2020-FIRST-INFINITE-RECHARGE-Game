@@ -190,7 +190,7 @@ void resetGame() {
     blueStationAvailable = 5;
 
     fadeTimer = FPS;
-    countDown = 0;
+    countDown = 5;
     startTime = -1; // -1 so that we know the game hasn't started yet
 }
 
