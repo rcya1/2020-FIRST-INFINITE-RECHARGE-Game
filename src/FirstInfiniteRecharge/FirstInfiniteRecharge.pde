@@ -9,8 +9,6 @@ import java.util.*;
 
 Box2DProcessing box2D; // Box2D world for handling physics
 
-final int FPS = 60; // frames per second
-
 // the currently pressed keys
 HashSet<Character> keysPressed;
 HashSet<Integer> keyCodes;
@@ -56,8 +54,6 @@ float redLoadingBallYSpacing = 0.02525;
 
 boolean topPadding; // whether or not the padding for the screen is on the top or the sides
 float scalingFactor; // how much the field image was scaled down by
-
-// TODO add second player
 
 /**
  * Set up all of the variables in the game
@@ -340,8 +336,8 @@ void showOverlay() {
     // calculate and draw match timer
     int min, sec;
     if(startTime == -1) {
-        min = 2;
-        sec = 30;
+        min = MATCH_LENGTH / 60;
+        sec = MATCH_LENGTH % 60;
     }
     else {
         min = getCurrentMatchTimeLeft() / 60;
@@ -363,6 +359,32 @@ void showOverlay() {
         textSize(150 / scalingFactor);
         text(countDown == 0 ? "Start!" : Integer.toString(countDown), width / 2, height / 2);
     }
+
+    // draw ending screen if the game is over
+    if(getCurrentMatchTimeLeft() <= 0 && countDown == 0) {
+        fill(255, 255, 255, 150);
+        rectMode(CENTER);
+        rect(width / 2, height / 2, width, height);
+
+        fill(0);
+        textAlign(CENTER, CENTER);
+        textSize(200 / scalingFactor);
+
+        // red won
+        if(redScore > blueScore) {
+            text("Red Alliance Wins!", width / 2, height / 3);
+        }
+        // blue won
+        else if(blueScore > redScore) {
+            text("Blue Alliance Wins!", width / 2, height / 3);
+        }
+        // tie
+        else {
+            text("Tie!", width / 2, height / 3);
+        }
+        textSize(150 / scalingFactor);
+        text("Press R to Restart", width / 2, height * 2 / 3);
+    }
 }
 
 /**
@@ -376,7 +398,7 @@ int getCurrentMatchTime() {
  * Returns the ceiling current match time left in seconds
  */
 int getCurrentMatchTimeLeft() {
-    return 150 - getCurrentMatchTime();
+    return MATCH_LENGTH - getCurrentMatchTime();
 }
 
 /**

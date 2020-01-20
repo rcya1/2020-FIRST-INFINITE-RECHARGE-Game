@@ -109,12 +109,14 @@ int pressMouseX = 0, pressMouseY = 0; // location of the last mouse press
  * Used to locate coordinates/measure distances and easily place objects
  */
 void mousePressed() {
-    println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(height - mouseY));
-    float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
-    println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
-    println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)));
-    println();
+    if(DEBUG_CLICK) {
+        println("Press X: ", getXRatio(mouseX), "Press Y: ", getYRatio(height - mouseY));
+        float d = dist(mouseX, mouseY, pressMouseX, pressMouseY);
+        println("Width: ", getWRatio(d), "Height: ", getHRatio(d));
+        println("Angle: ", degrees(atan2(pressMouseY - mouseY, mouseX - pressMouseX)));
+        println();
 
-    pressMouseX = mouseX;
-    pressMouseY = mouseY;
+        pressMouseX = mouseX;
+        pressMouseY = mouseY;
+    }
 }
