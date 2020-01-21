@@ -1,50 +1,65 @@
-# Intro to Programming Final Project - Fall 2019
+# First Infinite Recharge
 
-Please note that this website and the repository associated with it are the official source of info for the project. I will post all updates here. Please note that my updates will not be reflected in your repository, only in mine. Updates to the assignment info will be posted [here](https://jgerstein.github.io/FinalProject19/), resources will be on [the resources page](https://jgerstein.github.io/FinalProject19/resources), and sample code will be in the main repository's [examples](https://github.com/jgerstein/FinalProject19/tree/master/examples) folder.
+## Description
 
-## Goal
+This game is a 2D version of the 2020 First Robotics Competition (FRC) game "Infinite Recharge". In the actual game, two teams of three robots each play against each other to score as many points as possible during the match. In this 2D simplified version, each team only has one robot, which can be controlled by each player. The original game also includes various other tasks used for scoring, such as climbing and spinning the control panel, but those were omitted due to a lack of time and difficulty implementing in a 2D environment. To see a quick rundown of the original FRC game, click [here](https://www.youtube.com/watch?v=gmiYWTmFRVE) for the game animation. A picture of this 2D game is included below.
 
-Plan, code, document, and present a game written in Python. I encourage you to include graphics with Pygame or another game engine, but will not require it.
+![Game Screenshot](Game.png)
 
-## Criteria
+## Objective
 
-Excellent work will include:
+Collect Power Cells (yellow balls) and either dump them or score them into the goal with your color. Score more points than the enemy in order to win!
 
-* Clean, well-written, effective code
-* Version control in Git
-* Clear documentation of how te code works
-* A presentation of the game and of the process of creating it
-* Citations (MLA format) of the resources you used.
+## Controls
 
-## Expectations
+### Player 1
 
-### General
+| Action                            | Button                                  |
+| --------------------------------- | --------------------------------------- |
+| Move Forward                      | `W`                                     |
+| Move Backward                     | `S`                                     |
+| Turn Clockwise                    | `D`                                     |
+| Turn Counterclockwise             | `A`                                     |
+| Intake Power Cells                | `Shift`                                 |
+| Shoot Power Cells                 | Hold and Release `Space`                 |
+| Dump Power Cells                  | Press `Space` when touching the goal    |
+| Drop Power Cell from Loading Bay  | `E`                                     |
 
-* This is intended as an individual project. You may help each other, but you are responsible for your own work.
-* I am willing to consider partnerships for larger and more complex projects
-* You may (and are encouraged to) use resources you find online, but may not outright copy someone else's work and must credit your sources
-* Your work should challenge you but be achievable
-* You are expected to understand how your own code works. If you are not able to explain any part of your own code, that will be cause for concern
+### Player 2 (Right Hand)
 
-### Code
+| Action                            | Button                                  |
+| --------------------------------- | --------------------------------------- |
+| Move Forward                      | `I`                                     |
+| Move Backward                     | `K`                                     |
+| Turn Clockwise                    | `L`                                     |
+| Turn Counterclockwise             | `J`                                     |
+| Intake Power Cells                | `;`                                     |
+| Shoot Power Cells                 | Hold and Release `N`                    |
+| Dump Power Cells                  | Press `N` when touching the goal        |
+| Drop Power Cell from Loading Bay  | `U`                                     |
 
-* Your code should make effective use of classes and/or functions. We will review in class
-* Your code should be clear and well documented with comments and appropriate naming schemes
-* Your code should be managed through Git. I will be expecting to see commits reflecting your progress as you work on the project, and would prefer to see feature branches and a stable master branch.
-* Your code should be as reliable and as free of bugs as you can manage
+### Player 2 (Left Hand)
 
-## Timeline
+| Action                            | Button                                  |
+| --------------------------------- | --------------------------------------- |
+| Move Forward                      | `I`                                     |
+| Move Backward                     | `K`                                     |
+| Turn Clockwise                    | `L`                                     |
+| Turn Counterclockwise             | `J`                                     |
+| Intake Power Cells                | `H`                                     |
+| Shoot Power Cells                 | Hold and Release `.`                    |
+| Dump Power Cells                  | Press `.` when touching the goal        |
+| Drop Power Cell from Loading Bay  | `O`                                     |
 
-Date  | Checkpoint
-------|---------------------------------------------
-12/16 | Project Proposals Due (all classes)
-12/20 | Git repository setup check
-1/7   | First code checkpoint
-1/13  | Second code checkpoint
-1/17  | Third code checkpoint
-1/23  | Exams Begin. All code and documentation due
+## Software Used
 
-## Links
+- [Processing for Java](https://processing.org/)
+- [Box2D for Processing](https://github.com/shiffman/Box2D-for-Processing)
 
-* [Documentation](documentation.md)
-* [Resources](resources.md)
+## Works Cited
+
+Click [here](WorksCited.md) to go to the Works Cited.
+
+## Flowchart
+
+Click [here]() to go to the flowchart. TBD
