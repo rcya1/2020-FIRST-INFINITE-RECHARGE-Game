@@ -62,7 +62,7 @@ Click [here](WorksCited.md) to go to the Works Cited.
 
 ## Flowchart
 
-![Flowchart](FirstInfiniteRechargeFlowChart.png)
+![Flowchart](Flowchart.png)
 
 ## Presentation
 
