@@ -62,4 +62,4 @@ Click [here](WorksCited.md) to go to the Works Cited.
 
 ## Flowchart
 
-Click [here](FirstInfiniteRechargeFlowChart.png) to go to the flowchart. TBD
+![Flowchart](FirstInfiniteRechargeFlowChart.png)
