@@ -175,10 +175,11 @@ class Robot {
                 }
 
                 if(contactCells.contains(powerCell)) {
-                    powerCell.removeFromWorld();
+                    if(!powerCell.airborne && !powerCell.destroyed) {
+                        powerCell.removeFromWorld();
+                        numBalls++;
+                    }
                     contactCells.remove(powerCell);
-                    iterator.remove();
-                    numBalls++;
                 }
             }
         }
@@ -289,7 +290,7 @@ class Robot {
             }
 
             // begin charging the shooter
-            if(keys.contains(' ') && state == 0 && numBalls != 0) {
+            if(keys.contains(' ') && (state == 0 || state == 1) && numBalls != 0) {
                 state = 2;
                 // reset the shooter bar
                 shooterSpeed = 0;
@@ -299,7 +300,7 @@ class Robot {
             if(!keys.contains(' ') && state == 2) {
                 state = 3;
             }
-            // begin intaking when the f key is pressed and not shooting
+            // begin intaking when the shift key is pressed and not shooting
             if(keyCodes.contains(SHIFT) && state == 0) {
                 state = 1;
             }
@@ -328,17 +329,17 @@ class Robot {
             }
 
             // begin charging the shooter
-            if((keys.contains('.') || keys.contains('>') || keys.contains('n')) && state == 0 && numBalls != 0) {
+            if((keys.contains('.') || keys.contains('>') || keys.contains('n')) && (state == 0 || state == 1) && numBalls != 0) {
                 state = 2;
                 // reset the shooter bar
                 shooterSpeed = 0;
                 shooterSpeedBarVelocity = 1;
             }
-            // begin shooting when the spacebar is released
+            // begin shooting when the ./>/n key is released
             if(!(keys.contains('.') || keys.contains('>') || keys.contains('n')) && state == 2) {
                 state = 3;
             }
-            // begin intaking when the f key is pressed and not shooting
+            // begin intaking when the ;/: key is pressed and not shooting
             if((keys.contains(';') || keys.contains(':') || keys.contains('h')) && state == 0) {
                 state = 1;
             }
