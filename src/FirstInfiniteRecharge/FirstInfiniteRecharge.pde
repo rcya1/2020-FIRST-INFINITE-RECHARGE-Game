@@ -262,6 +262,8 @@ void update() {
         }
     }
 
+    println(powerCells.size());
+
     // println(frameRate);
 }
 
