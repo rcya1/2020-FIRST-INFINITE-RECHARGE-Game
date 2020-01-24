@@ -59,9 +59,9 @@ float scalingFactor; // how much the field image was scaled down by
  * Set up all of the variables in the game
  */
 void setup() {
-    size(1000, 600);
+    // size(1000, 600);
     // size(500, 300);
-    // fullScreen();
+    fullScreen();
     frameRate(FPS);
     setupImages();
 
@@ -262,7 +262,7 @@ void update() {
         }
     }
 
-    println(powerCells.size());
+    // println(powerCells.size());
 
     // println(frameRate);
 }
